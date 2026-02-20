@@ -18,6 +18,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend.Identity.Applicatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend.Identity.Infrastructure", "Backend.Identity.Infrastructure\Backend.Identity.Infrastructure.csproj", "{297AB512-828E-4BD0-BAC7-0C9F2C0D082E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{EA391458-34E1-439C-9519-40D190C4A862}"
+	ProjectSection(SolutionItems) = preProject
+		.env.template = .env.template
+		.env = .env
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

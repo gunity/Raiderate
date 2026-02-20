@@ -1,0 +1,50 @@
+﻿volumes:
+  postgres_identity_data:
+
+services:
+  postgres.identity:
+    container_name: postgres.identity
+    image: postgres:18.1
+    environment:
+      POSTGRES_USER: ${POSTGRES_IDENTITY_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_IDENTITY_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_IDENTITY_DATABASE}
+    volumes:
+      - postgres_identity_data:/var/lib/postgresql
+  
+  backend.gateway:
+    container_name: backend.gateway
+    image: ${BACKEND_GATEWAY_IMAGE}
+    build:
+      context: .
+      dockerfile: Backend.Gateway.Api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:3000
+      Destination__IdentityUrl: "http://backend.identity:3000"
+      Jwt__CookieName: ${JWT_COOKIE_NAME}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Jwt__Key: ${JWT_KEY}
+      Jwt__ExpireMinutes: ${JWT_EXPIRE_MINUTES}
+    ports:
+      - "${BACKEND_GATEWAY_PORT}:3000"
+
+  backend.identity:
+    container_name: backend.identity
+    image: ${BACKEND_IDENTITY_IMAGE}
+    build:
+      context: .
+      dockerfile: Backend.Identity.Api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:3000
+      Jwt__CookieName: ${JWT_COOKIE_NAME}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Jwt__Key: ${JWT_KEY}
+      Jwt__ExpireMinutes: ${JWT_EXPIRE_MINUTES}
+      Db__Connection: >
+        Host=postgres.identity;
+        Port=5432;
+        Username=${POSTGRES_IDENTITY_USER};
+        Password=${POSTGRES_IDENTITY_PASSWORD};
+        Database=${POSTGRES_IDENTITY_DATABASE}
