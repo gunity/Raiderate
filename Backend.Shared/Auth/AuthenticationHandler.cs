@@ -29,17 +29,17 @@ internal class AuthenticationHandler(
             return Task.FromResult(AuthenticateResult.NoResult());
         }
 
-        if (string.IsNullOrWhiteSpace(login))
+        if (string.IsNullOrWhiteSpace(login.ToString()))
         {
             return Task.FromResult(AuthenticateResult.NoResult());
         }
         
-        if (!Request.Headers.TryGetValue(AuthHeaders.UserRoles, out var role))
+        if (!Request.Headers.TryGetValue(AuthHeaders.UserRole, out var role))
         {
             return Task.FromResult(AuthenticateResult.NoResult());
         }
 
-        if (string.IsNullOrWhiteSpace(role))
+        if (string.IsNullOrWhiteSpace(role.ToString()))
         {
             return Task.FromResult(AuthenticateResult.NoResult());
         }

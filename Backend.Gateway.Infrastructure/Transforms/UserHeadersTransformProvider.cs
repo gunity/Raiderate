@@ -19,7 +19,7 @@ internal sealed class UserHeadersTransformProvider : ITransformProvider
 
             headers.Remove(AuthHeaders.UserId);
             headers.Remove(AuthHeaders.UserLogin);
-            headers.Remove(AuthHeaders.UserRoles);
+            headers.Remove(AuthHeaders.UserRole);
 
             var user = transformContext.HttpContext.User;
             if (!(user.Identity?.IsAuthenticated ?? false))
@@ -39,14 +39,10 @@ internal sealed class UserHeadersTransformProvider : ITransformProvider
                 headers.TryAddWithoutValidation(AuthHeaders.UserLogin, login);
             }
             
-            var roles = user
-                .FindAll(ClaimTypes.Role)
-                .Select(x => x.Value)
-                .Distinct()
-                .ToArray();
-            if (roles.Length > 0)
+            var role = user.FindFirstValue(ClaimTypes.Role);
+            if (!string.IsNullOrWhiteSpace(role))
             {
-                headers.TryAddWithoutValidation(AuthHeaders.UserRoles, string.Join(',', roles));
+                headers.TryAddWithoutValidation(AuthHeaders.UserRole, role);
             }
             
             return ValueTask.CompletedTask;
