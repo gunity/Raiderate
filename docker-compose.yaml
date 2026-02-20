@@ -48,3 +48,4 @@ services:
         Username=${POSTGRES_IDENTITY_USER};
         Password=${POSTGRES_IDENTITY_PASSWORD};
         Database=${POSTGRES_IDENTITY_DATABASE}
+    restart: on-failure
