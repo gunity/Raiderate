@@ -2,6 +2,7 @@ using Backend.Gateway.Infrastructure.Options;
 using Backend.Gateway.Infrastructure.Proxy;
 using Backend.Gateway.Infrastructure.Proxy.Common;
 using Backend.Gateway.Infrastructure.Transforms;
+using Backend.Shared.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

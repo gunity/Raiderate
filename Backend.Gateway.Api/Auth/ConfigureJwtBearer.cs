@@ -1,5 +1,5 @@
 using System.Text;
-using Backend.Gateway.Infrastructure.Options;
+using Backend.Shared.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
