@@ -1,4 +1,5 @@
 using Backend.Shared.Auth;
+using Backend.Shared.Middlewares;
 using Backend.Shared.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,7 @@ public static class DependencyInjection
 
     public static WebApplication UseGatewayAuth(this WebApplication app)
     {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
         app.UseAuthentication();
         app.UseAuthorization();
 

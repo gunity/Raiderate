@@ -1,6 +1,7 @@
 using Backend.Identity.Application.Common.Abstractions;
 using Backend.Identity.Application.Common.Abstractions.Persistence;
 using Backend.Identity.Domain.Users;
+using Backend.Shared.Exceptions;
 using MediatR;
 
 namespace Backend.Identity.Application.Register;
@@ -16,7 +17,7 @@ public class RegisterHandler(
         var login = request.Login.Trim().ToLowerInvariant();
         if (await userRepository.ExistsByLoginAsync(login, cancellationToken))
         {
-            // TODO app exception
+            throw new AlreadyExists("Login already exists");
         }
         
         var passwordHash = passwordHasher.Hash(request.Password);

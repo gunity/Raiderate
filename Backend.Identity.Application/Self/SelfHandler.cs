@@ -1,3 +1,4 @@
+using Backend.Shared.Exceptions;
 using Backend.Shared.Services;
 using MediatR;
 
@@ -11,7 +12,7 @@ public class SelfHandler(
     {
         if (!currentPlayer.IsAuthenticated)
         {
-            // TODO app exception
+            throw new UnauthorizedException();
         }
 
         var result = new SelfResult(currentPlayer.Id, currentPlayer.Login, currentPlayer.Role);

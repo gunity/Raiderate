@@ -1,5 +1,6 @@
 using Backend.Identity.Application.Common.Abstractions;
 using Backend.Identity.Application.Common.Abstractions.Persistence;
+using Backend.Shared.Exceptions;
 using MediatR;
 
 namespace Backend.Identity.Application.Login;
@@ -17,7 +18,7 @@ internal sealed class LoginHandler(
         var user = await userRepository.GetReadonlyByLoginAsync(login, cancellationToken);
         if (user is null || !passwordHasher.Verify(request.Password, user.PasswordHash))
         {
-            // TODO app exception
+            throw new UnauthorizedException("Invalid login or password");
         }
 
         return new LoginResult(user.Id, user.Login, user.Role.ToString().ToLowerInvariant());
