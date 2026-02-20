@@ -21,6 +21,6 @@ internal sealed class LoginHandler(
             throw new UnauthorizedException("Invalid login or password");
         }
 
-        return new LoginResult(user.Id, user.Login, user.Role.ToString().ToLowerInvariant());
+        return new LoginResult(user.Id, user.Login, user.Role.ToString());
     }
 }

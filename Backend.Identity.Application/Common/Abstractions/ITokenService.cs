@@ -1,5 +1,3 @@
-using Backend.Shared.Auth;
-
 namespace Backend.Identity.Application.Common.Abstractions;
 
 public interface ITokenService

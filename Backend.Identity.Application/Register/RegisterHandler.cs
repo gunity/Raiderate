@@ -26,6 +26,6 @@ public class RegisterHandler(
         await userRepository.AddAsync(user, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RegisterResult(user.Id, user.Login, user.Role.ToString().ToLowerInvariant());
+        return new RegisterResult(user.Id, user.Login, user.Role.ToString());
     }
 }
