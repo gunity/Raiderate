@@ -40,6 +40,7 @@ public static class DependencyInjection
             services.AddSingleton<IProxyConfigProvider, ProxyConfigProvider>();
         
             services.AddSingleton<IProxyModule, IdentityProxyModule>();
+            services.AddSingleton<IProxyModule, PlayersProxyModule>();
 
             services
                 .AddReverseProxy()
