@@ -32,7 +32,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 roleEnum => roleEnum.ToString().ToLowerInvariant(),
                 roleString => Enum.Parse<AppRole>(roleString, ignoreCase: true))
             .HasMaxLength(UserConstants.MaxRoleLength)
-            .HasDefaultValue(nameof(AppRole.User).ToLowerInvariant())
+            .HasDefaultValue(AppRole.User)
             .IsRequired();
     }
 }
