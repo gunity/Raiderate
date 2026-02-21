@@ -9,5 +9,7 @@ public class AppException(int code, string message) : Exception(message)
 
 public sealed class UnauthorizedException(string message = "Unauthorized") 
     : AppException(StatusCodes.Status401Unauthorized, message);
-public sealed class AlreadyExists(string message) 
-    :  AppException(StatusCodes.Status409Conflict, message);
+public sealed class AlreadyExistsException(string message) 
+    : AppException(StatusCodes.Status409Conflict, message);
+public sealed class NotFoundException(string message)
+    : AppException(StatusCodes.Status404NotFound, message);
