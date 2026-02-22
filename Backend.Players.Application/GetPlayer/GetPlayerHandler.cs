@@ -13,12 +13,12 @@ public class GetPlayerHandler(
         var nickname = request.Nickname.Trim().ToLowerInvariant();
         if (string.IsNullOrWhiteSpace(nickname))
         {
-            throw new NotFoundException($"Player with nickname=({request.Nickname}) not found");
+            throw new NotFoundAppException($"Player with nickname=({request.Nickname}) not found");
         }
         var player = await playerRepository.GetReadonlyByNicknameAsync(request.Nickname, cancellationToken);
         if (player is null)
         {
-            throw new NotFoundException($"Player with nickname=({request.Nickname}) not found");
+            throw new NotFoundAppException($"Player with nickname=({request.Nickname}) not found");
         }
 
         return new GetPlayerResult(player.Id, player.Nickname, player.Rating, player.VotesCount);

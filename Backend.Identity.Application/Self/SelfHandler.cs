@@ -12,7 +12,7 @@ public class SelfHandler(
     {
         if (!currentPlayer.IsAuthenticated)
         {
-            throw new UnauthorizedException();
+            throw new UnauthorizedAppException();
         }
 
         var result = new SelfResult(currentPlayer.Id, currentPlayer.Login, currentPlayer.Role);

@@ -18,7 +18,7 @@ internal sealed class LoginHandler(
         var user = await userRepository.GetReadonlyByLoginAsync(login, cancellationToken);
         if (user is null || !passwordHasher.Verify(request.Password, user.PasswordHash))
         {
-            throw new UnauthorizedException("Invalid login or password");
+            throw new UnauthorizedAppException("Invalid login or password");
         }
 
         return new LoginResult(user.Id, user.Login, user.Role.ToString());

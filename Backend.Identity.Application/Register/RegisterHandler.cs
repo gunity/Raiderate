@@ -17,7 +17,7 @@ public class RegisterHandler(
         var login = request.Login.Trim().ToLowerInvariant();
         if (await userRepository.ExistsByLoginAsync(login, cancellationToken))
         {
-            throw new AlreadyExistsException("Login already exists");
+            throw new AlreadyExistsAppException("Login already exists");
         }
         
         var passwordHash = passwordHasher.Hash(request.Password);
