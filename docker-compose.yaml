@@ -44,6 +44,8 @@ services:
       ASPNETCORE_URLS: http://+:3000
       Destination__IdentityUrl: "http://backend.identity:3000"
       Destination__PlayersUrl: "http://backend.players:3000"
+      Destination__RatingReasonsUrl: "http://backend.ratings:3000"
+      Destination__VotesUrl: "http://backend.ratings:3000"
       Jwt__CookieName: ${JWT_COOKIE_NAME}
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}

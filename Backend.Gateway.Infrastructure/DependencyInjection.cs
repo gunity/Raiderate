@@ -41,6 +41,8 @@ public static class DependencyInjection
         
             services.AddSingleton<IProxyModule, IdentityProxyModule>();
             services.AddSingleton<IProxyModule, PlayersProxyModule>();
+            services.AddSingleton<IProxyModule, RatingReasonsProxyModule>();
+            services.AddSingleton<IProxyModule, VotesProxyModule>();
 
             services
                 .AddReverseProxy()
