@@ -1,6 +1,7 @@
 ﻿volumes:
   postgres_identity_data:
   postgres_players_data:
+  postgres_ratings_data:
 
 services:
   postgres.identity:
@@ -22,6 +23,16 @@ services:
       POSTGRES_DB: ${POSTGRES_PLAYERS_DATABASE}
     volumes:
       - postgres_players_data:/var/lib/postgresql
+
+  postgres.ratings:
+    container_name: postgres.ratings
+    image: postgres:18.1
+    environment:
+      POSTGRES_USER: ${POSTGRES_RATINGS_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_RATINGS_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_RATINGS_DATABASE}
+    volumes:
+      - postgres_ratings_data:/var/lib/postgresql
   
   backend.gateway:
     container_name: backend.gateway
@@ -81,4 +92,25 @@ services:
         Username=${POSTGRES_PLAYERS_USER};
         Password=${POSTGRES_PLAYERS_PASSWORD};
         Database=${POSTGRES_PLAYERS_DATABASE}
+    restart: on-failure
+    
+  backend.ratings:
+    container_name: backend.ratings
+    image: ${BACKEND_RATINGS_IMAGE}
+    build:
+      context: .
+      dockerfile: Backend.Ratings.Api/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:3000
+      Jwt__CookieName: ${JWT_COOKIE_NAME}
+      Jwt__Issuer: ${JWT_ISSUER}
+      Jwt__Audience: ${JWT_AUDIENCE}
+      Jwt__Key: ${JWT_KEY}
+      Jwt__ExpireMinutes: ${JWT_EXPIRE_MINUTES}
+      Db__Connection: >
+        Host=postgres.ratings;
+        Port=5432;
+        Username=${POSTGRES_RATINGS_USER};
+        Password=${POSTGRES_RATINGS_PASSWORD};
+        Database=${POSTGRES_RATINGS_DATABASE}
     restart: on-failure
