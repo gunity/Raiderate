@@ -4,7 +4,7 @@ import {env} from "@/shared/env";
 export async function POST(request: Request) {
     const body = await request.text();
 
-    const response = await fetch(`${env.gatewayInternalUrl}/api/identity/login`, {
+    const response = await fetch(`${env.gatewayInternalUrl}/api/identity/register`, {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
         body,

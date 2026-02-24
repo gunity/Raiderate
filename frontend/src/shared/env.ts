@@ -7,5 +7,5 @@ function getEnv(name: string): string {
 }
 
 export const env = {
-    gatewayInternalUrl: getEnv('gatewayInternalUrl'),
-}
+    gatewayInternalUrl: getEnv("BACKEND_GATEWAY_URL"),
+};
