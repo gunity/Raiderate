@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{EA3914
 	ProjectSection(SolutionItems) = preProject
 		.env.template = .env.template
 		.env = .env
+		docker-compose.yaml = docker-compose.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend.Players", "Backend.Players", "{687C2CC8-7D65-432F-98FB-EE633897CE23}"

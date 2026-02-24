@@ -2,8 +2,22 @@
   postgres_identity_data:
   postgres_players_data:
   postgres_ratings_data:
+  frontend_node_modules:
 
 services:
+  frontend.dev:
+    container_name: frontend.dev
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm i && npm run dev -- -H 0.0.0.0 -p 3000"
+    environment:
+      BACKEND_GATEWAY_URL: "http://backend.gateway:3000"
+    ports:
+      - "${FRONTEND_DEV_PORT}:3000"
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+  
   postgres.identity:
     container_name: postgres.identity
     image: postgres:18.1
