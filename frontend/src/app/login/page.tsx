@@ -1,0 +1,95 @@
+"use client";
+
+import React from "react";
+import {useRouter} from "next/navigation";
+import {isErrorResponse} from "@/shared/api";
+
+export default function LoginPage() {
+
+    const [login, setLogin] = React.useState("");
+    const [password, setPassword] = React.useState("");
+
+    const [error, setError] = React.useState<string | null>(null);
+    const [loading, setLoading] = React.useState(false);
+
+    const router = useRouter();
+
+    async function onLogin(e: React.SubmitEvent) {
+        e.preventDefault();
+
+        setError(null);
+        setLoading(true);
+
+        const fallback = "Login failed";
+
+        try {
+            const result = await fetch("/bff/identity/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({login, password}),
+            });
+
+            if (!result.ok) {
+                const json: unknown = await result.json().catch(() => null);
+
+                if (isErrorResponse(json)) {
+                    throw new Error(json.message);
+                } else {
+                    throw new Error(fallback);
+                }
+            }
+
+            router.push("/");
+        } catch (e: unknown) {
+            setError(e instanceof Error ? e.message : fallback);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <div className="min-h-screen flex flex-col items-center justify-center">
+            <div className="w-72">
+                <form
+                    onSubmit={onLogin}
+                    className="grid gap-3">
+                    <input
+                        type="text"
+                        name="login"
+                        placeholder="Login"
+                        value={login}
+                        onChange={e => setLogin(e.target.value)}
+                        className="border rounded p-2"
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        className="border rounded p-2"
+                    />
+                    <div
+                        hidden={!error}
+                        className="text-sm text-red-700 text-center"
+                    >
+                        {error}
+                    </div>
+                    <button
+                        type="submit"
+                        className="border rounded p-2 cursor-pointer"
+                        disabled={loading || !login || !password}
+                    >
+                        {!loading ? "Login" : "Loading"}
+                    </button>
+                    <a
+                        href="#"
+                        className="underline text-center"
+                    >
+                        go to registration
+                    </a>
+                </form>
+            </div>
+        </div>
+    );
+}
