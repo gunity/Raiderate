@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Backend.Identity.Application.Login;
 
-internal class LoginValidation : AbstractValidator<LoginCommand>
+public sealed class LoginValidation : AbstractValidator<LoginCommand>
 {
     public LoginValidation()
     {

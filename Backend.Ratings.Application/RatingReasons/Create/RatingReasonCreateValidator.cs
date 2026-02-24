@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Backend.Ratings.Application.RatingReasons.Create;
 
-public class RatingReasonCreateValidation : AbstractValidator<RatingReasonCreateCommand>
+public sealed class RatingReasonCreateValidator : AbstractValidator<RatingReasonCreateCommand>
 {
-    public RatingReasonCreateValidation()
+    public RatingReasonCreateValidator()
     {
         RuleFor(x => x.Code)
             .NotEmpty()

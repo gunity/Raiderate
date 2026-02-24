@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Backend.Shared.Contracts;
 using Backend.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -22,15 +23,22 @@ public class ExceptionHandlingMiddleware(
 
             int code;
             string message;
-            if (exception is AppException appException)
+            switch (exception)
             {
-                code = appException.Code;
-                message = appException.Message;
-            }
-            else
-            {
-                code = StatusCodes.Status500InternalServerError;
-                message = "Internal Server Error";
+                case AppException appException:
+                    code = appException.Code;
+                    message = appException.Message;
+                    break;
+                case FluentValidation.ValidationException validationException:
+                    code = StatusCodes.Status400BadRequest;
+                    message = validationException.Errors
+                        .Select(x => x.ErrorMessage)
+                        .Aggregate((x, y) => $"{x}\n{y}");
+                    break;
+                default:
+                    code = StatusCodes.Status500InternalServerError;
+                    message = "Internal Server Error";
+                    break;
             }
 
             logger.LogError(exception,
