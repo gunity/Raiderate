@@ -52,7 +52,6 @@ public class Controller(
         return Ok();
     }
 
-    [Authorize(Roles = AppRoleWire.Admin)]
     [HttpGet("self")]
     public async Task<IActionResult> Self(
         CancellationToken ct = default)
