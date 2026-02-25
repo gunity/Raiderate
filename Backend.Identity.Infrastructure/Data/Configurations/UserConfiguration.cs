@@ -32,7 +32,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 roleEnum => AppRoleMapper.ToWrite(roleEnum),
                 roleString => AppRoleMapper.Parse(roleString))
             .HasMaxLength(UserConstants.MaxRoleLength)
-            .HasDefaultValue(AppRoleMapper.ToWrite(AppRole.User))
+            .HasDefaultValue(AppRole.User)
             .IsRequired();
     }
 }
