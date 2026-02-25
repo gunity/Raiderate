@@ -1,6 +1,7 @@
 using Backend.Identity.Application.Common.Abstractions;
 using Backend.Identity.Application.Common.Abstractions.Persistence;
 using Backend.Identity.Domain.Users;
+using Backend.Shared.Auth;
 using Backend.Shared.Exceptions;
 using MediatR;
 
@@ -26,6 +27,6 @@ public class RegisterHandler(
         await userRepository.AddAsync(user, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new RegisterResult(user.Id, user.Login, user.Role.ToString());
+        return new RegisterResult(user.Id, user.Login, AppRoleMapper.ToWrite(user.Role));
     }
 }

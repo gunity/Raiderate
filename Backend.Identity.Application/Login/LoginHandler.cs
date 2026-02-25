@@ -1,5 +1,6 @@
 using Backend.Identity.Application.Common.Abstractions;
 using Backend.Identity.Application.Common.Abstractions.Persistence;
+using Backend.Shared.Auth;
 using Backend.Shared.Exceptions;
 using MediatR;
 
@@ -21,6 +22,6 @@ internal sealed class LoginHandler(
             throw new UnauthorizedAppException("Invalid login or password");
         }
 
-        return new LoginResult(user.Id, user.Login, user.Role.ToString());
+        return new LoginResult(user.Id, user.Login, AppRoleMapper.ToWrite(user.Role));
     }
 }

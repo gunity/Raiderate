@@ -29,10 +29,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder
             .Property(x => x.Role)
             .HasConversion(
-                roleEnum => roleEnum.ToString().ToLowerInvariant(),
-                roleString => Enum.Parse<AppRole>(roleString, ignoreCase: true))
+                roleEnum => AppRoleMapper.ToWrite(roleEnum),
+                roleString => AppRoleMapper.Parse(roleString))
             .HasMaxLength(UserConstants.MaxRoleLength)
-            .HasDefaultValue(AppRole.User)
+            .HasDefaultValue(AppRoleMapper.ToWrite(AppRole.User))
             .IsRequired();
     }
 }

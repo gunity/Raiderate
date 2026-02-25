@@ -15,7 +15,7 @@ public class RatingReasonsController(
 ) : ControllerBase
 {
     [HttpPost("admin")]
-    [Authorize(nameof(AppRole.Admin))]
+    [Authorize(Roles = AppRoleWire.Admin)]
     public async Task<ActionResult<RatingReasonCreateResult>> CreateAsync(
         [FromBody] RatingReasonCreateCommand command,
         CancellationToken ct = default)
@@ -25,7 +25,7 @@ public class RatingReasonsController(
     }
 
     [HttpGet("admin")]
-    [Authorize(nameof(AppRole.Admin))]
+    [Authorize(Roles = AppRoleWire.Admin)]
     public async Task<ActionResult> GetAllAsync(
         CancellationToken ct = default)
     {
@@ -34,7 +34,7 @@ public class RatingReasonsController(
     }
 
     [HttpPut("admin/{id:long}")]
-    [Authorize(nameof(AppRole.Admin))]
+    [Authorize(Roles = AppRoleWire.Admin)]
     public async Task<IActionResult> UpdateAsync(
         [FromRoute] long id,
         [FromBody] RatingReasonUpdateBody body,
