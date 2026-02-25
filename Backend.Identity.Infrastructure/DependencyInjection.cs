@@ -3,6 +3,7 @@ using Backend.Identity.Application.Common.Abstractions.Persistence;
 using Backend.Identity.Infrastructure.Data;
 using Backend.Identity.Infrastructure.Options;
 using Backend.Identity.Infrastructure.Persistence;
+using Backend.Identity.Infrastructure.Seeding;
 using Backend.Identity.Infrastructure.Services;
 using Backend.Shared.Options;
 using Microsoft.AspNetCore.Builder;
@@ -47,6 +48,12 @@ public static class DependencyInjection
                 .Bind(configuration.GetSection("Jwt"))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
+
+            services
+                .AddOptions<AdminOptions>()
+                .Bind(configuration.GetSection("Admin"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
         }
         
         void AddDatabase()
@@ -56,6 +63,7 @@ public static class DependencyInjection
                 var dbOptions = serviceProvider.GetRequiredService<IOptions<DbOptions>>().Value;
                 options.UseNpgsql(dbOptions.Connection);
             });
+            services.AddHostedService<AdminSeederHostedService>();
         }
     }
 

@@ -87,6 +87,8 @@ services:
         Username=${POSTGRES_IDENTITY_USER};
         Password=${POSTGRES_IDENTITY_PASSWORD};
         Database=${POSTGRES_IDENTITY_DATABASE}
+      Admin__Login: ${ADMIN_LOGIN}
+      Admin__Password: ${ADMIN_PASSWORD}
     restart: on-failure
 
   backend.players:
