@@ -1,5 +1,6 @@
 using Backend.Ratings.Application.RatingReasons.Create;
 using Backend.Ratings.Application.RatingReasons.GetAll;
+using Backend.Ratings.Application.RatingReasons.GetAllActive;
 using Backend.Ratings.Application.RatingReasons.Update;
 using Backend.Shared.Auth;
 using MediatR;
@@ -24,9 +25,17 @@ public class RatingReasonsController(
         return Ok(result);
     }
 
+    [HttpGet]
+    public async Task<ActionResult<RatingReasonGetAllActiveResult>> GetAllActiveAsync(
+        CancellationToken ct = default)
+    {
+        var result = await mediator.Send(RatingReasonGetAllActiveQuery.Default, ct);
+        return Ok(result);
+    }
+
     [HttpGet("admin")]
     [Authorize(Roles = AppRoleWire.Admin)]
-    public async Task<ActionResult> GetAllAsync(
+    public async Task<ActionResult<RatingReasonGetAllResult>> GetAllAsync(
         CancellationToken ct = default)
     {
         var result = await mediator.Send(RatingReasonGetAllQuery.Default, ct);
@@ -40,8 +49,8 @@ public class RatingReasonsController(
         [FromBody] RatingReasonUpdateBody body,
         CancellationToken ct = default)
     {
-        var command = new RatingReasonUpdateCommand(id, body.Value, body.IsActive);
+        var command = new RatingReasonUpdateCommand(id, body.Code, body.Value, body.IsActive);
         await mediator.Send(command, ct);
-        return Ok();
+        return NoContent();
     }
 }

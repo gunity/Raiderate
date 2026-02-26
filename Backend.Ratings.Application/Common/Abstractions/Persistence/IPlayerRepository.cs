@@ -10,4 +10,5 @@ public interface IRatingReasonRepository
     Task<IEnumerable<RatingReason>> GetAllActiveAsync(CancellationToken ct = default);
 
     Task AddAsync(RatingReason reason, CancellationToken ct = default);
+    Task<bool> ExistsByCode(string code, CancellationToken ct = default);
 }

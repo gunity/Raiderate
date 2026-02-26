@@ -35,4 +35,10 @@ public class RatingReasonRepository(AppDbContext context) : IRatingReasonReposit
         await context.RatingReasons
             .AddAsync(reason, ct);
     }
+
+    public Task<bool> ExistsByCode(string code, CancellationToken ct = default)
+    {
+        return context.RatingReasons
+            .AnyAsync(x => x.Code == code, ct);
+    }
 }

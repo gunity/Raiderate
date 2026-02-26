@@ -17,6 +17,10 @@ public class RatingReasonUpdateHandler(
             throw new NotFoundAppException("Rating reason not found");
         }
 
+        if (!string.IsNullOrWhiteSpace(request.Code))
+        {
+            reason.UpdateCode(request.Code);
+        }
         if (request.Value.HasValue)
         {
             reason.UpdateValue(request.Value.Value);

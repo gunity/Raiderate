@@ -16,11 +16,16 @@ public class RatingReason
         IsActive = true;
     }
 
+    public void UpdateCode(string requestCode)
+    {
+        Code = requestCode.Trim();
+    }
+
     public void UpdateValue(int value)
     {
         Value = value;
     }
-    
+
     public void UpdateIsActive(bool isActive)
     {
         IsActive = isActive;
