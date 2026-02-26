@@ -2,7 +2,7 @@
 
 import React from "react";
 import {useRouter} from "next/navigation";
-import {isErrorResponse} from "@/shared/http";
+import {isErrorResponse} from "@/shared/http/types";
 
 export default function LoginPage() {
 

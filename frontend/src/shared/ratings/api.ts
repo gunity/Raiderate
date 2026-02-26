@@ -1,12 +1,11 @@
 import {RatingReason} from "@/shared/ratings/types";
+import apiFetch from "@/shared/http/fetch";
 
 type RatingReasonGetAllActiveResult = { reasons: RatingReason[] };
 
 export async function getAllActiveRatingReasons(): Promise<RatingReason[]> {
-    const response = await fetch(`/bff/rating-reasons/admin`, {
-        method: "GET",
-        cache: "no-store",
-        credentials: "include"
+    const response = await apiFetch(`/bff/rating-reasons/admin`, {
+        method: "GET"
     });
 
     if (!response.ok) {
@@ -20,11 +19,8 @@ export async function getAllActiveRatingReasons(): Promise<RatingReason[]> {
 type RatingReasonCreateResult = { id: number };
 
 export async function createRatingReason(item: RatingReason): Promise<number> {
-    const response = await fetch(`/bff/rating-reasons/admin`, {
+    const response = await apiFetch(`/bff/rating-reasons/admin`, {
         method: "POST",
-        cache: "no-store",
-        headers: {"content-type": "application/json"},
-        credentials: "include",
         body: JSON.stringify({
             code: item.code,
             value: item.value,
@@ -41,11 +37,8 @@ export async function createRatingReason(item: RatingReason): Promise<number> {
 }
 
 export async function updateRatingReason(item: RatingReason): Promise<void> {
-    const response = await fetch(`/bff/rating-reasons/admin/${item.id}`, {
+    const response = await apiFetch(`/bff/rating-reasons/admin/${item.id}`, {
         method: "PUT",
-        cache: "no-store",
-        headers: {"content-type": "application/json"},
-        credentials: "include",
         body: JSON.stringify({
             code: item.code,
             value: item.value,
