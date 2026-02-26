@@ -2,7 +2,7 @@
 
 import React from "react";
 import {useRouter} from "next/navigation";
-import {isErrorResponse} from "@/shared/api";
+import {isErrorResponse} from "@/shared/http";
 
 export default function LoginPage() {
 
@@ -82,12 +82,6 @@ export default function LoginPage() {
                     >
                         {!loading ? "Login" : "Loading"}
                     </button>
-                    <a
-                        href="#"
-                        className="underline text-center"
-                    >
-                        go to registration
-                    </a>
                 </form>
             </div>
         </div>
