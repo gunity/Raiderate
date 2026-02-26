@@ -16,6 +16,8 @@ internal sealed class UserHeadersTransformProvider(
     ILogger<UserHeadersTransformProvider> logger
 ) : ITransformProvider
 {
+    private static readonly JwtSecurityTokenHandler Handler = new();
+    
     private readonly TokenValidationParameters _validation = new()
     {
         ValidateIssuer = true,
@@ -46,7 +48,7 @@ internal sealed class UserHeadersTransformProvider(
             headers.Remove(AuthHeaders.UserRole);
 
             var http = transformContext.HttpContext;
-            if (!http.Request.Cookies.TryGetValue(jwtOptions.Value.CookieName, out var token))
+            if (!http.Request.Cookies.TryGetValue(jwtOptions.Value.AccessTokenName, out var token))
             {
                 return ValueTask.CompletedTask;
             }
@@ -58,11 +60,15 @@ internal sealed class UserHeadersTransformProvider(
             ClaimsPrincipal principal;
             try
             {
-                principal = new JwtSecurityTokenHandler().ValidateToken(token, _validation, out _);
+                principal = Handler.ValidateToken(token, _validation, out _);
+            }
+            catch (SecurityTokenExpiredException)
+            {
+                return ValueTask.CompletedTask;
             }
             catch (Exception exception)
             {
-                logger.LogError(exception, "Token is invalid");
+                logger.LogWarning(exception, "Token is invalid");
                 return ValueTask.CompletedTask;
             }
 

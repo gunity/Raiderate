@@ -60,11 +60,13 @@ services:
       Destination__PlayersUrl: "http://backend.players:3000"
       Destination__RatingReasonsUrl: "http://backend.ratings:3000"
       Destination__VotesUrl: "http://backend.ratings:3000"
-      Jwt__CookieName: ${JWT_COOKIE_NAME}
+      Jwt__AccessTokenName: ${JWT_ACCESS_TOKEN_NAME}
+      Jwt__RefreshTokenName: ${JWT_REFRESH_TOKEN_NAME}
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}
       Jwt__Key: ${JWT_KEY}
-      Jwt__ExpireMinutes: ${JWT_EXPIRE_MINUTES}
+      Jwt__AccessTokenExpireMinutes: ${JWT_ACCESS_TOKEN_EXPIRE_MINUTES}
+      Jwt__RefreshTokenExpireDays: ${JWT_REFRESH_TOKEN_EXPIRE_DAYS}
     ports:
       - "${BACKEND_GATEWAY_PORT}:3000"
 
@@ -76,11 +78,13 @@ services:
       dockerfile: Backend.Identity.Api/Dockerfile
     environment:
       ASPNETCORE_URLS: http://+:3000
-      Jwt__CookieName: ${JWT_COOKIE_NAME}
+      Jwt__AccessTokenName: ${JWT_ACCESS_TOKEN_NAME}
+      Jwt__RefreshTokenName: ${JWT_REFRESH_TOKEN_NAME}
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}
       Jwt__Key: ${JWT_KEY}
-      Jwt__ExpireMinutes: ${JWT_EXPIRE_MINUTES}
+      Jwt__AccessTokenExpireMinutes: ${JWT_ACCESS_TOKEN_EXPIRE_MINUTES}
+      Jwt__RefreshTokenExpireDays: ${JWT_REFRESH_TOKEN_EXPIRE_DAYS}
       Db__Connection: >
         Host=postgres.identity;
         Port=5432;
@@ -99,11 +103,13 @@ services:
       dockerfile: Backend.Players.Api/Dockerfile
     environment:
       ASPNETCORE_URLS: http://+:3000
-      Jwt__CookieName: ${JWT_COOKIE_NAME}
+      Jwt__AccessTokenName: ${JWT_ACCESS_TOKEN_NAME}
+      Jwt__RefreshTokenName: ${JWT_REFRESH_TOKEN_NAME}
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}
       Jwt__Key: ${JWT_KEY}
-      Jwt__ExpireMinutes: ${JWT_EXPIRE_MINUTES}
+      Jwt__AccessTokenExpireMinutes: ${JWT_ACCESS_TOKEN_EXPIRE_MINUTES}
+      Jwt__RefreshTokenExpireDays: ${JWT_REFRESH_TOKEN_EXPIRE_DAYS}
       Db__Connection: >
         Host=postgres.players;
         Port=5432;
@@ -120,11 +126,13 @@ services:
       dockerfile: Backend.Ratings.Api/Dockerfile
     environment:
       ASPNETCORE_URLS: http://+:3000
-      Jwt__CookieName: ${JWT_COOKIE_NAME}
+      Jwt__AccessTokenName: ${JWT_ACCESS_TOKEN_NAME}
+      Jwt__RefreshTokenName: ${JWT_REFRESH_TOKEN_NAME}
       Jwt__Issuer: ${JWT_ISSUER}
       Jwt__Audience: ${JWT_AUDIENCE}
       Jwt__Key: ${JWT_KEY}
-      Jwt__ExpireMinutes: ${JWT_EXPIRE_MINUTES}
+      Jwt__AccessTokenExpireMinutes: ${JWT_ACCESS_TOKEN_EXPIRE_MINUTES}
+      Jwt__RefreshTokenExpireDays: ${JWT_REFRESH_TOKEN_EXPIRE_DAYS}
       Db__Connection: >
         Host=postgres.ratings;
         Port=5432;

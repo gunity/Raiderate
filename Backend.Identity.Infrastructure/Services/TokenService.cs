@@ -10,7 +10,42 @@ namespace Backend.Identity.Infrastructure.Services;
 
 public sealed class TokenService(IOptions<JwtOptions> jwtOptions) : ITokenService
 {
-    public string IssueToken(long id, string login, string role)
+    private static readonly JwtSecurityTokenHandler Handler = new();
+
+    private readonly TokenValidationParameters _tokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidIssuer = jwtOptions.Value.Issuer,
+
+        ValidateAudience = true,
+        ValidAudience = jwtOptions.Value.Audience,
+
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.Key)),
+
+        ValidateLifetime = true,
+        RequireExpirationTime = true,
+        ClockSkew = TimeSpan.FromSeconds(30)
+    };
+    
+    public string GetAccessToken(long id, string login, string role)
+    {
+        return IssueToken(id, login, role, DateTime.UtcNow.AddMinutes(jwtOptions.Value.AccessTokenExpireMinutes));
+    }
+
+    public string GetRefreshToken(long id, string login, string role)
+    {
+        return IssueToken(id, login, role, DateTime.UtcNow.AddDays(jwtOptions.Value.RefreshTokenExpireDays));
+    }
+
+    public async Task<bool> ValidateRefreshToken(string token, CancellationToken ct = default)
+    {
+        var result = await Handler.ValidateTokenAsync(token, _tokenValidationParameters);
+
+        return result.IsValid;
+    }
+
+    private string IssueToken(long id, string login, string role, DateTime expires)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -25,7 +60,7 @@ public sealed class TokenService(IOptions<JwtOptions> jwtOptions) : ITokenServic
             issuer: jwtOptions.Value.Issuer,
             audience: jwtOptions.Value.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(jwtOptions.Value.ExpireMinutes),
+            expires: expires,
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(securityToken);
