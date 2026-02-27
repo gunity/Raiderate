@@ -38,11 +38,16 @@ public sealed class TokenService(IOptions<JwtOptions> jwtOptions) : ITokenServic
         return IssueToken(id, login, role, DateTime.UtcNow.AddDays(jwtOptions.Value.RefreshTokenExpireDays));
     }
 
-    public async Task<bool> ValidateRefreshToken(string token, CancellationToken ct = default)
+    public async Task<ClaimsPrincipal?> ValidateRefreshTokenAsync(string token, CancellationToken ct = default)
     {
         var result = await Handler.ValidateTokenAsync(token, _tokenValidationParameters);
 
-        return result.IsValid;
+        if (!result.IsValid || result.ClaimsIdentity is null)
+        {
+            return null;
+        } 
+        
+        return new ClaimsPrincipal(result.ClaimsIdentity);
     }
 
     private string IssueToken(long id, string login, string role, DateTime expires)

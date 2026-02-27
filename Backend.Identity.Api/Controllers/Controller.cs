@@ -59,24 +59,27 @@ public class Controller(
 
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshAsync(
-        CancellationToken  ct = default)
+        CancellationToken ct = default)
     {
         if (!cookieService.TryGetRefreshToken(Request.Cookies, out var token))
         {
             throw new UnauthorizedAppException("Refresh token not found");
         }
 
-        if (!await tokenService.ValidateRefreshToken(token, ct))
+        var claims = await tokenService.ValidateRefreshTokenAsync(token, ct);
+        if (claims is null)
         {
-            throw new UnauthorizedAppException("Invalid refresh token");
+            throw new UnauthorizedAppException("Refresh token is invalid");
         }
-        
-        var result = await mediator.Send(SelfQuery.Default, ct);
-        
-        var accessToken = tokenService.GetAccessToken(result.Id, result.Login, result.Role);
-        var refreshToken = tokenService.GetRefreshToken(result.Id, result.Login, result.Role);
+
+        var id = long.Parse(claims.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var login = claims.FindFirstValue(ClaimTypes.Name)!;
+        var role = claims.FindFirstValue(ClaimTypes.Role)!;
+
+        var accessToken = tokenService.GetAccessToken(id, login, role);
+        var refreshToken = tokenService.GetRefreshToken(id, login, role);
         cookieService.WriteCookie(Response.Cookies, accessToken, refreshToken);
-        
+
         return Ok();
     }
 
