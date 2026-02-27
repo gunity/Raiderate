@@ -9,11 +9,11 @@ public class RatingReason
 
     public RatingReason() { } // EF
 
-    public RatingReason(string code, int value)
+    public RatingReason(string code, int value, bool isActive = true)
     {
         Code = code.Trim().ToLowerInvariant();
         Value = value;
-        IsActive = true;
+        IsActive = isActive;
     }
 
     public void UpdateCode(string requestCode)

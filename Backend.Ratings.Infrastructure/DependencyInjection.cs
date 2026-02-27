@@ -2,6 +2,7 @@ using Backend.Ratings.Application.Common.Abstractions.Persistence;
 using Backend.Ratings.Infrastructure.Data;
 using Backend.Ratings.Infrastructure.Options;
 using Backend.Ratings.Infrastructure.Persistence;
+using Backend.Ratings.Infrastructure.Seeder;
 using Backend.Shared.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,7 @@ public static class DependencyInjection
                 var dbOptions = serviceProvider.GetRequiredService<IOptions<DbOptions>>().Value;
                 options.UseNpgsql(dbOptions.Connection);
             });
+            services.AddHostedService<RatingReasonSeederHostedService>();
         }
     }
 
