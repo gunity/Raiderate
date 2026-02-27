@@ -41,4 +41,10 @@ public class RatingReasonRepository(AppDbContext context) : IRatingReasonReposit
         return context.RatingReasons
             .AnyAsync(x => x.Code == code, ct);
     }
+
+    public Task<bool> ExistsAndActiveById(long id, CancellationToken ct = default)
+    {
+        return context.RatingReasons
+            .AnyAsync(x => x.Id == id && x.IsActive, ct);
+    }
 }

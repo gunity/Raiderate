@@ -25,9 +25,6 @@ public static class DependencyInjection
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPlayerRepository, PlayerRepository>();
-        
-            // services.AddScoped<IPasswordHasher<>, PasswordHasher>();
-            // services.AddScoped<ITokenService, TokenService>();
         }
         
         void AddOptions()

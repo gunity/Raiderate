@@ -9,6 +9,7 @@ COPY ["Backend.Ratings.Api/Backend.Ratings.Api.csproj", "Backend.Ratings.Api/"]
 COPY ["Backend.Ratings.Application/Backend.Ratings.Application.csproj", "Backend.Ratings.Application/"]
 COPY ["Backend.Ratings.Domain/Backend.Ratings.Domain.csproj", "Backend.Ratings.Domain/"]
 COPY ["Backend.Shared/Backend.Shared.csproj", "Backend.Shared/"]
+COPY ["Backend.Contracts.Grpc/Backend.Contracts.Grpc.csproj", "Backend.Contracts.Grpc/"]
 COPY ["Backend.Ratings.Infrastructure/Backend.Ratings.Infrastructure.csproj", "Backend.Ratings.Infrastructure/"]
 RUN dotnet restore "Backend.Ratings.Api/Backend.Ratings.Api.csproj"
 COPY . .

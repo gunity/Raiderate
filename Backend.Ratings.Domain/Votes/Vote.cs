@@ -14,11 +14,11 @@ public class Vote
 
     public Vote() { } // EF
 
-    public Vote(long playerId, long fromUserId, RatingReason reason, string? comment = null)
+    public Vote(long playerId, long fromUserId, long reasonId, string? comment = null)
     {
         PlayerId = playerId;
         FromUserId = fromUserId;
-        ReasonId = reason.Id;
+        ReasonId = reasonId;
         Comment = comment;
         CreatedAt = DateTime.UtcNow;
     }

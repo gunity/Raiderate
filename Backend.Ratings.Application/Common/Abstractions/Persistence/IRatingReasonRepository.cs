@@ -11,4 +11,5 @@ public interface IRatingReasonRepository
 
     Task AddAsync(RatingReason reason, CancellationToken ct = default);
     Task<bool> ExistsByCode(string code, CancellationToken ct = default);
+    Task<bool> ExistsAndActiveById(long id, CancellationToken ct = default);
 }

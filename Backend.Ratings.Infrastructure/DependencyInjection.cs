@@ -30,7 +30,7 @@ public static class DependencyInjection
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRatingReasonRepository, RatingReasonRepository>();
-            // services.AddScoped<IVoteRepository, VoteRepository>();
+            services.AddScoped<IVoteRepository, VoteRepository>();
         }
         
         void AddOptions()
