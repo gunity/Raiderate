@@ -1,16 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import React, {useEffect, useState} from "react";
-import {getIdentitySelf} from "@/shared/identity/api";
-import {IdentitySelf} from "@/shared/identity/types";
+import {getIdentitySelf, identityLogout} from "@/shared/identity/api";
+import {useAuthStore} from "@/shared/auth/store";
 
 export default function Header() {
 
     const path = usePathname();
-    const [self, setSelf] = React.useState<IdentitySelf | null>(null);
-    const [loading, setLoading] = React.useState(true);
+
+    const self = useAuthStore((s) => s.self);
+    const loading = useAuthStore((s) => s.loading);
+    const loadSelf = useAuthStore((s) => s.loadSelf);
+    const logoutLocal = useAuthStore((s) => s.logout);
+
+    const router = useRouter();
+
+    useEffect(() => {
+        (async () => {
+            await loadSelf();
+        })();
+    }, [loadSelf]);
+
+    const logout = async () => {
+        await identityLogout();
+        logoutLocal();
+    };
 
     const headerActions = () => {
         if (loading) {
@@ -37,21 +53,14 @@ export default function Header() {
         }
 
         return (
-            <Link
-                href="/logout"
+            <button
                 className="border rounded p-2 cursor-pointer"
+                onClick={logout}
             >
                 Logout
-            </Link>
+            </button>
         );
     };
-
-    useEffect(() => {
-        (async () => {
-            setSelf(await getIdentitySelf());
-            setLoading(false);
-        })();
-    }, []);
 
     return (
         <div

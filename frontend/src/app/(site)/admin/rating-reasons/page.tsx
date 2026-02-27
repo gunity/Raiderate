@@ -1,5 +1,15 @@
-import AdminRatingReasonsPage from "@/pages/AdminRatingReasons";
+import "server-only";
 
-export default function Page() {
-    return <AdminRatingReasonsPage/>;
+import isAdmin from "@/shared/common/api";
+import {notFound} from "next/navigation";
+
+export default async function Page() {
+    const adminPrivileges = await isAdmin();
+
+    if (!adminPrivileges) {
+        notFound();
+    }
+
+    const Page = (await import("@/pages/AdminRatingReasons")).default;
+    return <Page/>;
 }

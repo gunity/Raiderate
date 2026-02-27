@@ -9,7 +9,7 @@ export async function getAllActiveRatingReasons(): Promise<RatingReason[]> {
     });
 
     if (!response.ok) {
-        throw new Error("Failed to load admin rating reasons");
+        throw new Error("Failed to load rating reasons");
     }
 
     const result = (await response.json()) as RatingReasonGetAllActiveResult;

@@ -1,4 +1,4 @@
-export default async function apiFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+export default async function apiFetch(input: string | URL | Request, init?: RequestInit): Promise<Response> {
     const first = await fetch(input, {
         ...init,
         cache: "no-store",
@@ -10,7 +10,7 @@ export default async function apiFetch(input: RequestInfo | URL, init?: RequestI
         return first;
     }
 
-    const refreshed = await fetch("/api/identity/refresh", {
+    const refreshed = await fetch(`/bff/identity/refresh`, {
         method: "POST",
         credentials: "include",
     });

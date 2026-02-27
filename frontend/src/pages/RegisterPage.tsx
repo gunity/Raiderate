@@ -3,6 +3,7 @@
 import React from "react";
 import {useRouter} from "next/navigation";
 import {isErrorResponse} from "@/shared/http/types";
+import {useAuthStore} from "@/shared/auth/store";
 
 export default function RegisterPage() {
 
@@ -12,6 +13,8 @@ export default function RegisterPage() {
 
     const [error, setError] = React.useState<string | null>(null);
     const [loading, setLoading] = React.useState(false);
+
+    const loadSelf = useAuthStore((s) => s.loadSelf);
 
     const router = useRouter();
 
@@ -46,7 +49,8 @@ export default function RegisterPage() {
                 }
             }
 
-            router.push("/");
+            await loadSelf();
+            router.replace("/");
         } catch (e: unknown) {
             setError(e instanceof Error ? e.message : fallback);
         } finally {
