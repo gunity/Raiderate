@@ -13,4 +13,9 @@ public class PlayerRepository(AppDbContext context) : IPlayerRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Nickname == nickname, ct);
     }
+
+    public async Task AddAsync(Player player, CancellationToken ct = default)
+    {
+        await context.Players.AddAsync(player, ct);
+    }
 }

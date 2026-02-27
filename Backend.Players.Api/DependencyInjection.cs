@@ -1,3 +1,5 @@
+using Backend.Players.Api.Grpc;
+
 namespace Backend.Players.Api;
 
 public static class DependencyInjection
@@ -6,19 +8,13 @@ public static class DependencyInjection
     {
         services.AddControllers();
         
-        // AddServices();
-
         return services;
-        
-        // void AddServices()
-        // {
-            // services.AddScoped<ICookieService, CookieService>();
-        // }
     }
 
     public static WebApplication UseApi(this WebApplication app)
     {
         app.MapControllers();
+        app.MapGrpcService<PlayersGrpcService>();
 
         return app;
     }

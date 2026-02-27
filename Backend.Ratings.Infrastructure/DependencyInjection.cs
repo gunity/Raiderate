@@ -1,5 +1,8 @@
+using Backend.Contracts.Grpc;
+using Backend.Ratings.Application.Common.Abstractions;
 using Backend.Ratings.Application.Common.Abstractions.Persistence;
 using Backend.Ratings.Infrastructure.Data;
+using Backend.Ratings.Infrastructure.Grpc;
 using Backend.Ratings.Infrastructure.Options;
 using Backend.Ratings.Infrastructure.Persistence;
 using Backend.Ratings.Infrastructure.Seeder;
@@ -19,6 +22,7 @@ public static class DependencyInjection
         AddServices();
         AddOptions();
         AddDatabase();
+        AddGrpc();
 
         return services;
         
@@ -38,6 +42,12 @@ public static class DependencyInjection
                 .Bind(configuration.GetSection("Db"))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
+            
+            services
+                .AddOptions<DestinationOptions>()
+                .Bind(configuration.GetSection("Destination"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
 
             services
                 .AddOptions<JwtOptions>()
@@ -54,6 +64,17 @@ public static class DependencyInjection
                 options.UseNpgsql(dbOptions.Connection);
             });
             services.AddHostedService<RatingReasonSeederHostedService>();
+        }
+        
+        void AddGrpc()
+        {
+            services.AddGrpcClient<PlayersService.PlayersServiceClient>((serviceProvider, options) =>
+            {
+                var destinationOptions = serviceProvider.GetRequiredService<IOptions<DestinationOptions>>().Value;
+                options.Address = new Uri(destinationOptions.PlayersGrpcUrl);
+            });
+
+            services.AddScoped<IPlayerClient, PlayersGrpcClient>();
         }
     }
 

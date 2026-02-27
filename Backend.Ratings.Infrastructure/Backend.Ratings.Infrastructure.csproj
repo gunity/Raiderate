@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Backend.Contracts.Grpc\Backend.Contracts.Grpc.csproj" />
       <ProjectReference Include="..\Backend.Ratings.Application\Backend.Ratings.Application.csproj" />
       <ProjectReference Include="..\Backend.Ratings.Domain\Backend.Ratings.Domain.csproj" />
     </ItemGroup>
