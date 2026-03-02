@@ -3,11 +3,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Ratings.Api.Controllers.Votes;
+namespace Backend.Ratings.Api.Controllers;
 
 [ApiController]
 [Route("api/votes")]
-public class Controller(IMediator mediator) : ControllerBase
+public class VotesController(IMediator mediator) : ControllerBase
 {
     [Authorize]
     [HttpPost]
