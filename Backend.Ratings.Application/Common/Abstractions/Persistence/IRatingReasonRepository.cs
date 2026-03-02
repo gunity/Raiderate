@@ -6,10 +6,10 @@ namespace Backend.Ratings.Application.Common.Abstractions.Persistence;
 public interface IRatingReasonRepository
 {
     Task<RatingReason?> GetAsync(long id, CancellationToken ct = default);
+    Task<RatingReason?> GetActiveReadonlyAsync(long id, CancellationToken ct = default);
     Task<IEnumerable<RatingReason>> GetAllAsync(CancellationToken ct = default);
     Task<IEnumerable<RatingReason>> GetAllActiveAsync(CancellationToken ct = default);
 
     Task AddAsync(RatingReason reason, CancellationToken ct = default);
     Task<bool> ExistsByCode(string code, CancellationToken ct = default);
-    Task<bool> ExistsAndActiveById(long id, CancellationToken ct = default);
 }

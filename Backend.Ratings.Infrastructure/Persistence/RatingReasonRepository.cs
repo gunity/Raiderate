@@ -13,6 +13,13 @@ public class RatingReasonRepository(AppDbContext context) : IRatingReasonReposit
             .FirstOrDefaultAsync(x => x.Id == id, ct);
     }
 
+    public async Task<RatingReason?> GetActiveReadonlyAsync(long id, CancellationToken ct = default)
+    {
+        return await context.RatingReasons
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id && x.IsActive, ct);
+    }
+
     public async Task<IEnumerable<RatingReason>> GetAllAsync(CancellationToken ct = default)
     {
         return await context.RatingReasons
@@ -40,11 +47,5 @@ public class RatingReasonRepository(AppDbContext context) : IRatingReasonReposit
     {
         return context.RatingReasons
             .AnyAsync(x => x.Code == code, ct);
-    }
-
-    public Task<bool> ExistsAndActiveById(long id, CancellationToken ct = default)
-    {
-        return context.RatingReasons
-            .AnyAsync(x => x.Id == id && x.IsActive, ct);
     }
 }

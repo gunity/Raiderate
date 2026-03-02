@@ -15,4 +15,10 @@ public class Player
         Rating = 0;
         VotesCount = 0;
     }
+
+    public void ApplyVote(int delta)
+    {
+        Rating += delta;
+        VotesCount++;
+    }
 }

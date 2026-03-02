@@ -1,8 +1,10 @@
 using Backend.Players.Application.Common.Abstractions.Persistence;
+using Backend.Players.Infrastructure.Consumers;
 using Backend.Players.Infrastructure.Data;
 using Backend.Players.Infrastructure.Options;
 using Backend.Players.Infrastructure.Persistence;
 using Backend.Shared.Options;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +20,7 @@ public static class DependencyInjection
         AddServices();
         AddOptions();
         AddDatabase();
+        AddMassTransit();
 
         return services;
         
@@ -42,6 +45,12 @@ public static class DependencyInjection
                 .Bind(configuration.GetSection("Jwt"))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
+            
+            services
+                .AddOptions<RabbitMqOptions>()
+                .Bind(configuration.GetSection("Rabbit"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
         }
         
         void AddDatabase()
@@ -50,6 +59,25 @@ public static class DependencyInjection
             {
                 var dbOptions = serviceProvider.GetRequiredService<IOptions<DbOptions>>().Value;
                 options.UseNpgsql(dbOptions.Connection);
+            });
+        }
+
+        void AddMassTransit()
+        {
+            services.AddMassTransit(configurator =>
+            {
+                configurator.AddConsumer<VoteCreatedConsumer>();
+                
+                configurator.UsingRabbitMq((context, bus) =>
+                {
+                    var rabbitMqOptions = context.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
+                    bus.Host(rabbitMqOptions.Host, "/", hostConfigurator =>
+                    {
+                        hostConfigurator.Username(rabbitMqOptions.User);
+                        hostConfigurator.Password(rabbitMqOptions.Password);
+                    });
+                    bus.ConfigureEndpoints(context);
+                });
             });
         }
     }

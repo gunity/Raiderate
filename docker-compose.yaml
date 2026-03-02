@@ -5,6 +5,15 @@
   frontend_node_modules:
 
 services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:4-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_MQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_MQ_PASSWORD}
+    ports:
+      - ${RABBIT_MQ_WEB_PORT}:15672
+  
   frontend.dev:
     container_name: frontend.dev
     image: node:22-alpine
@@ -115,6 +124,9 @@ services:
         Username=${POSTGRES_PLAYERS_USER};
         Password=${POSTGRES_PLAYERS_PASSWORD};
         Database=${POSTGRES_PLAYERS_DATABASE}
+      Rabbit__Host: "rabbitmq"
+      Rabbit__User: ${RABBIT_MQ_USER}
+      Rabbit__Password: ${RABBIT_MQ_PASSWORD}
     restart: on-failure
     
   backend.ratings:
@@ -139,4 +151,7 @@ services:
         Username=${POSTGRES_RATINGS_USER};
         Password=${POSTGRES_RATINGS_PASSWORD};
         Database=${POSTGRES_RATINGS_DATABASE}
+      Rabbit__Host: "rabbitmq"
+      Rabbit__User: ${RABBIT_MQ_USER}
+      Rabbit__Password: ${RABBIT_MQ_PASSWORD}
     restart: on-failure

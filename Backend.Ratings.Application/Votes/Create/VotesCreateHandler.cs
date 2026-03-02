@@ -1,8 +1,10 @@
+using Backend.Contracts.Events;
 using Backend.Ratings.Application.Common.Abstractions;
 using Backend.Ratings.Application.Common.Abstractions.Persistence;
 using Backend.Ratings.Domain.Votes;
 using Backend.Shared.Exceptions;
 using Backend.Shared.Services;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -14,14 +16,16 @@ public class VotesCreateHandler(
     IRatingReasonRepository ratingReasonRepository,
     IPlayerClient playerClient,
     ICurrentPlayer currentPlayer,
-    IUnitOfWork unitOfWork
+    IUnitOfWork unitOfWork,
+    IPublishEndpoint publishEndpoint
 ) : IRequestHandler<VotesCreateCommand, VotesCreateResult>
 {
     public async Task<VotesCreateResult> Handle(VotesCreateCommand request, CancellationToken cancellationToken)
     {
         var player = await playerClient.EnsurePlayerAsync(request.Nickname, cancellationToken);
 
-        if (!await ratingReasonRepository.ExistsAndActiveById(request.ReasonId, cancellationToken))
+        var reason = await ratingReasonRepository.GetActiveReadonlyAsync(request.ReasonId, cancellationToken);
+        if (reason is null)
         {
             throw new NotFoundAppException($"Reason with ID=({request.ReasonId}) not found");
         }
@@ -37,6 +41,9 @@ public class VotesCreateHandler(
         {
             throw new AlreadyExistsAppException("Vote already exists");
         }
+
+        var voteCreated = new VoteCreated(player.Id,reason.Value, currentPlayer.Id, reason.Id);
+        await publishEndpoint.Publish(voteCreated, cancellationToken);
 
         return new VotesCreateResult(vote.Id, vote.PlayerId);
     }

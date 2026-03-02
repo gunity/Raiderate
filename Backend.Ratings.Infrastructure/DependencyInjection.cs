@@ -7,10 +7,12 @@ using Backend.Ratings.Infrastructure.Options;
 using Backend.Ratings.Infrastructure.Persistence;
 using Backend.Ratings.Infrastructure.Seeder;
 using Backend.Shared.Options;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Backend.Ratings.Infrastructure;
@@ -23,6 +25,7 @@ public static class DependencyInjection
         AddOptions();
         AddDatabase();
         AddGrpc();
+        AddMassTransit();
 
         return services;
         
@@ -54,6 +57,12 @@ public static class DependencyInjection
                 .Bind(configuration.GetSection("Jwt"))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
+
+            services
+                .AddOptions<RabbitMqOptions>()
+                .Bind(configuration.GetSection("Rabbit"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
         }
         
         void AddDatabase()
@@ -75,6 +84,22 @@ public static class DependencyInjection
             });
 
             services.AddScoped<IPlayerClient, PlayersGrpcClient>();
+        }
+
+        void AddMassTransit()
+        {
+            services.AddMassTransit(configurator =>
+            {
+                configurator.UsingRabbitMq((context, bus) =>
+                {
+                    var rabbitMqOptions = context.GetRequiredService<IOptions<RabbitMqOptions>>().Value;
+                    bus.Host(rabbitMqOptions.Host, "/", hostConfigurator =>
+                    {
+                        hostConfigurator.Username(rabbitMqOptions.User);
+                        hostConfigurator.Password(rabbitMqOptions.Password);
+                    });
+                });
+            });
         }
     }
 
