@@ -9,14 +9,14 @@ public class ApplyVoteValidator : AbstractValidator<ApplyVoteCommand>
         RuleFor(x => x.PlayerId)
             .NotEmpty();
         
-        RuleFor(x => x.FromUserId)
-            .NotEmpty();
+        // RuleFor(x => x.FromUserId)
+            // .NotEmpty();
 
         RuleFor(x => x.Delta)
             .NotEmpty();
         
-        RuleFor(x => x.ReasonId)
-            .GreaterThanOrEqualTo(0)
-            .NotEmpty();
+        // RuleFor(x => x.ReasonId)
+            // .GreaterThanOrEqualTo(0)
+            // .NotEmpty();
     }
 }
