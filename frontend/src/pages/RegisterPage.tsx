@@ -4,6 +4,7 @@ import React from "react";
 import {useRouter} from "next/navigation";
 import {isErrorResponse} from "@/shared/http/types";
 import {useAuthStore} from "@/shared/auth/store";
+import {UserPlus} from "lucide-react";
 
 export default function RegisterPage() {
 
@@ -59,7 +60,7 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="min-h-[calc(100vh-57px)] flex flex-col items-center justify-center">
             <div className="w-72">
                 <form
                     onSubmit={onRegister}
@@ -70,7 +71,7 @@ export default function RegisterPage() {
                         placeholder="Login"
                         value={login}
                         onChange={e => setLogin(e.target.value)}
-                        className="border rounded p-2"
+                        className="border border-[#1d2226] rounded p-2"
                     />
                     <input
                         type="password"
@@ -78,7 +79,7 @@ export default function RegisterPage() {
                         placeholder="Password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        className="border rounded p-2"
+                        className="border border-[#1d2226] rounded p-2"
                     />
                     <input
                         type="password"
@@ -86,7 +87,7 @@ export default function RegisterPage() {
                         placeholder="Re-type password"
                         value={passwordConfirm}
                         onChange={e => setPasswordConfirm(e.target.value)}
-                        className="border rounded p-2"
+                        className="border border-[#1d2226] rounded p-2"
                     />
                     <div
                         hidden={!error}
@@ -96,10 +97,17 @@ export default function RegisterPage() {
                     </div>
                     <button
                         type="submit"
-                        className="border rounded p-2 cursor-pointer"
+                        className="pt-3 cursor-pointer"
                         disabled={loading || !login || !password}
                     >
-                        {!loading ? "Register" : "Loading"}
+                        {!loading ? (
+                            <div className="inline-flex gap-2 items-center">
+                                <UserPlus className="w-5 h-5"/>
+                                <span>Register</span>
+                            </div>
+                        ) : (
+                            "..."
+                        )}
                     </button>
                 </form>
             </div>

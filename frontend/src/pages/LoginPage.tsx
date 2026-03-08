@@ -4,6 +4,7 @@ import React from "react";
 import {useRouter} from "next/navigation";
 import {isErrorResponse} from "@/shared/http/types";
 import {useAuthStore} from "@/shared/auth/store";
+import {LogIn} from "lucide-react";
 
 export default function LoginPage() {
 
@@ -52,7 +53,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="min-h-[calc(100vh-57px)] flex flex-col items-center justify-center">
             <div className="w-72">
                 <form
                     onSubmit={onLogin}
@@ -63,7 +64,7 @@ export default function LoginPage() {
                         placeholder="Login"
                         value={login}
                         onChange={e => setLogin(e.target.value)}
-                        className="border rounded p-2"
+                        className="border border-[#1d2226] rounded p-2"
                     />
                     <input
                         type="password"
@@ -71,7 +72,7 @@ export default function LoginPage() {
                         placeholder="Password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-                        className="border rounded p-2"
+                        className="border border-[#1d2226] rounded p-2"
                     />
                     <div
                         hidden={!error}
@@ -81,10 +82,17 @@ export default function LoginPage() {
                     </div>
                     <button
                         type="submit"
-                        className="border rounded p-2 cursor-pointer"
+                        className="pt-3 cursor-pointer"
                         disabled={loading || !login || !password}
                     >
-                        {!loading ? "Login" : "Loading"}
+                        {!loading ? (
+                            <div className="inline-flex gap-2 items-center">
+                                <LogIn className="w-5 h-5"/>
+                                <span>Login</span>
+                            </div>
+                        ) : (
+                            "..."
+                        )}
                     </button>
                 </form>
             </div>

@@ -5,6 +5,7 @@ import {usePathname, useRouter} from "next/navigation";
 import React, {useEffect, useState} from "react";
 import {getIdentitySelf, identityLogout} from "@/shared/identity/api";
 import {useAuthStore} from "@/shared/auth/store";
+import {LogIn, LogOut, UserPlus} from "lucide-react";
 
 export default function Header() {
 
@@ -30,7 +31,7 @@ export default function Header() {
 
     const headerActions = () => {
         if (loading) {
-            return <>...</>;
+            return <></>;
         }
 
         if (!self) {
@@ -38,15 +39,17 @@ export default function Header() {
                 <Link
                     href="/login"
                     hidden={path === "/login"}
-                    className="border rounded p-2 cursor-pointer"
+                    className="inline-flex gap-2 items-center p-2 cursor-pointer hover:text-[#ffbe00]"
                 >
+                    <LogIn className="w-5 h5"/>
                     Login
                 </Link>
                 <Link
                     href="/register"
                     hidden={path === "/register"}
-                    className="border rounded p-2 cursor-pointer"
+                    className="inline-flex gap-2 items-center p-2 cursor-pointer hover:text-[#ffbe00]"
                 >
+                    <UserPlus className="w-5 h5"/>
                     Register
                 </Link>
             </>);
@@ -54,9 +57,10 @@ export default function Header() {
 
         return (
             <button
-                className="border rounded p-2 cursor-pointer"
+                className="inline-flex gap-2 items-center p-2 cursor-pointer hover:text-[#ffbe00]"
                 onClick={logout}
             >
+                <LogOut className="h-5 w-5"/>
                 Logout
             </button>
         );
@@ -64,9 +68,9 @@ export default function Header() {
 
     return (
         <div
-            className="border-b h-14 flex items-center justify-between px-2"
+            className="border-b border-[#1d2226] bg-black h-14 flex items-center justify-between px-6"
         >
-            <Link href="/">
+            <Link href="/" className="text-[#eee4d0] font-bold">
                 Raiderate
             </Link>
             <div
