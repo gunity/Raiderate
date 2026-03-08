@@ -1,4 +1,5 @@
 using Backend.Ratings.Application.Votes.Create;
+using Backend.Ratings.Application.Votes.GetComments;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,20 @@ public class VotesController(IMediator mediator) : ControllerBase
         CancellationToken ct = default)
     {
         var result = await mediator.Send(command, ct);
+        
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<ActionResult<GetCommentsResult>> GetCommentsAsync(
+        [FromQuery] long playerId,
+        [FromQuery] int limit = 5,
+        CancellationToken ct = default)
+    {
+        limit = Math.Clamp(limit, 1, 50);
+        
+        var result = await mediator.Send(new GetCommentsQuery(playerId, limit), ct);
         
         return Ok(result);
     }

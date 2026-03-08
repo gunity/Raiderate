@@ -20,6 +20,24 @@ public class PlayerRepository(AppDbContext context) : IPlayerRepository
             .FirstOrDefaultAsync(x => x.Id == id, ct);
     }
 
+    public async Task<IReadOnlyList<Player>> GetReadonlyTopAsync(int limit, CancellationToken ct = default)
+    {
+        return await context.Players
+            .AsNoTracking()
+            .OrderByDescending(x => x.Rating)
+            .Take(limit)
+            .ToListAsync(ct);
+    }
+
+    public async Task<IReadOnlyList<Player>> GetReadonlyBottomAsync(int limit, CancellationToken ct = default)
+    {
+        return await context.Players
+            .AsNoTracking()
+            .OrderBy(x => x.Rating)
+            .Take(limit)
+            .ToListAsync(ct);
+    }
+
     public async Task AddAsync(Player player, CancellationToken ct = default)
     {
         await context.Players.AddAsync(player, ct);

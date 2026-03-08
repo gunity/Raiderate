@@ -1,15 +1,17 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {RatingReason} from "@/shared/ratings/types";
 import {getAllActiveRatingReasons} from "@/shared/ratings/api";
 import {getRatingReasonLabel} from "@/shared/ratings/reasons";
 import {createVote} from "@/shared/votes/api";
+import {Star} from "lucide-react";
 
 export default function RatePage() {
 
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [sending, setSending] = useState<boolean>(false);
     const [nickname, setNickname] = useState("");
     const [comment, setComment] = useState("");
     const [reasons, setReasons] = useState<RatingReason[]>([]);
@@ -43,17 +45,17 @@ export default function RatePage() {
     }
 
     return (
-        <div className="p-4">
-            <form className="flex flex-col gap-2" action={handleSubmit}>
+        <div className="min-h-[calc(100vh-57px)] flex flex-col items-center justify-center">
+            <form className="flex flex-col gap-2 w-72" action={handleSubmit}>
                 <input
-                    className="border rounded p-2 h-10 w-80"
+                    className="border border-[#1d2226] rounded p-2"
                     type="text"
                     placeholder="Nickname"
                     value={nickname}
                     onChange={(e) => setNickname(e.target.value)}
                 />
                 <select
-                    className="border rounded p-2 h-10 w-80"
+                    className="border border-[#1d2226] rounded p-2"
                     value={reasonId ?? ""}
                     onChange={(e) => setReasonId(Number(e.target.value))}
                 >
@@ -64,7 +66,7 @@ export default function RatePage() {
                     ))}
                 </select>
                 <input
-                    className="border rounded p-2 h-10 w-80"
+                    className="border border-[#1d2226] rounded p-2"
                     type="text"
                     placeholder="Comment (optional)"
                     value={comment}
@@ -72,14 +74,22 @@ export default function RatePage() {
                 />
 
                 {!!error && (
-                    <div>{error}</div>
+                    <div className="text-center text-[#f4101b]">{error}</div>
                 )}
 
                 <button
-                    className="border rounded p-2 h-10 w-80"
                     type="submit"
+                    className="pt-3 cursor-pointer"
+                    disabled={sending}
                 >
-                    Send
+                    {!sending ? (
+                        <div className="inline-flex gap-2 items-center">
+                            <Star className="w-5 h-5"/>
+                            <span>Send</span>
+                        </div>
+                    ) : (
+                        "sending..."
+                    )}
                 </button>
             </form>
         </div>
