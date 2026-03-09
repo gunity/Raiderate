@@ -39,7 +39,7 @@ export default function Header() {
             hidden={path === "/login"}
             className="inline-flex cursor-pointer items-center gap-2 p-2 hover:text-[#ffbe00]"
           >
-            <LogIn className="h5 w-5" />
+            <LogIn className="h-5 w-5" />
             Login
           </Link>
           <Link
@@ -47,7 +47,7 @@ export default function Header() {
             hidden={path === "/register"}
             className="inline-flex cursor-pointer items-center gap-2 p-2 hover:text-[#ffbe00]"
           >
-            <UserPlus className="h5 w-5" />
+            <UserPlus className="h-5 w-5" />
             Register
           </Link>
         </>
