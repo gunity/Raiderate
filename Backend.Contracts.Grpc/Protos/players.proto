@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "Backend.Contracts.Grpc";
+
+package players;
+
+service PlayersService {
+  rpc EnsurePlayer (EnsurePlayerRequest) returns (EnsurePlayerReply);
+}
+
+message EnsurePlayerRequest {
+  string nickname = 1;
+}
+
+message EnsurePlayerReply {
+  int64 id = 1;
+  string nickname = 2;
+}
