@@ -1,5 +1,6 @@
 using Backend.Ratings.Domain.RatingReasons;
 using Backend.Ratings.Domain.Votes;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Ratings.Infrastructure.Data;
@@ -12,5 +13,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+        modelBuilder.AddInboxStateEntity();
+        modelBuilder.AddOutboxStateEntity();
+        modelBuilder.AddOutboxMessageEntity();
     }
 }

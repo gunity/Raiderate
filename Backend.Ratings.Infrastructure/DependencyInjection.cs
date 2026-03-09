@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Backend.Ratings.Infrastructure;
@@ -96,6 +95,14 @@ public static class DependencyInjection
         {
             services.AddMassTransit(configurator =>
             {
+                configurator.SetKebabCaseEndpointNameFormatter();
+                
+                configurator.AddEntityFrameworkOutbox<AppDbContext>(options =>
+                {
+                    options.UsePostgres();
+                    options.UseBusOutbox();
+                });
+                
                 configurator.UsingRabbitMq((context, bus) =>
                 {
                     var rabbitMqOptions = context.GetRequiredService<IOptions<RabbitMqOptions>>().Value;

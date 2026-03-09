@@ -34,6 +34,10 @@ public class VotesCreateHandler(
         try
         {
             await voteRepository.CreateAsync(vote, cancellationToken);
+            
+            var voteCreated = new VoteCreated(player.Id,reason.Value, currentPlayer.Id, reason.Id);
+            await publishEndpoint.Publish(voteCreated, cancellationToken);
+            
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException exception) 
@@ -41,10 +45,7 @@ public class VotesCreateHandler(
         {
             throw new AlreadyExistsAppException("Vote already exists");
         }
-
-        var voteCreated = new VoteCreated(player.Id,reason.Value, currentPlayer.Id, reason.Id);
-        await publishEndpoint.Publish(voteCreated, cancellationToken);
-
+        
         return new VotesCreateResult(vote.Id, vote.PlayerId);
     }
 }
