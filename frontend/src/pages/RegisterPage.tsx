@@ -18,7 +18,7 @@ export default function RegisterPage() {
 
   const router = useRouter();
 
-  async function onRegister(e: React.SubmitEvent) {
+  async function onRegister(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setError(null);
