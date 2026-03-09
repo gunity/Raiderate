@@ -1,5 +1,5 @@
 using Backend.Contracts.Grpc;
-using Backend.Players.Application.EnsurePlayer;
+using Backend.Players.Application.GetOrCreate;
 using Grpc.Core;
 using MediatR;
 
@@ -7,10 +7,10 @@ namespace Backend.Players.Api.Grpc;
 
 public class PlayersGrpcService(IMediator mediator) : PlayersService.PlayersServiceBase
 {
-    public override async Task<EnsurePlayerReply> EnsurePlayer(EnsurePlayerRequest request, ServerCallContext context)
+    public override async Task<GetOrCreatePlayerReply> GetOrCreatePlayer(GetOrCreatePlayerRequest request, ServerCallContext context)
     {
-        var result = await mediator.Send(new EnsurePlayerCommand(request.Nickname), context.CancellationToken);
-        return new EnsurePlayerReply
+        var result = await mediator.Send(new GetOrCreatePlayerCommand(request.Nickname), context.CancellationToken);
+        return new GetOrCreatePlayerReply
         {
             Id = result.Id,
             Nickname = result.Nickname
