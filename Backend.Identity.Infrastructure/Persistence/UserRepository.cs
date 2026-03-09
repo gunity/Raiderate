@@ -14,6 +14,13 @@ public class UserRepository(AppDbContext context) : IUserRepository
             .FirstOrDefaultAsync(x => x.Login == login, ct);
     }
 
+    public async Task<User?> GetReadonlyByIdAsync(long id, CancellationToken ct = default)
+    {
+        return await context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, ct);
+    }
+
     public async Task<bool> ExistsByLoginAsync(string login, CancellationToken ct = default)
     {
         return await context.Users

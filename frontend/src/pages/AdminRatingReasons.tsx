@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import RatingReasonEditModal from "@/components/RatingReasonEditModal";
 import {RatingReason} from "@/shared/ratings/types";
-import {createRatingReason, getAllActiveRatingReasons, updateRatingReason} from "@/shared/ratings/api";
+import {createRatingReason, getAllRatingReasons, updateRatingReason} from "@/shared/ratings/api";
 
 export default function AdminRatingReasonsPage() {
 
@@ -17,7 +17,7 @@ export default function AdminRatingReasonsPage() {
             setError(null);
 
             try {
-                const items: RatingReason[] = await getAllActiveRatingReasons();
+                const items: RatingReason[] = await getAllRatingReasons();
                 setItems(items);
             } catch (error: unknown) {
                 setError(error instanceof Error ? error.message : "error");

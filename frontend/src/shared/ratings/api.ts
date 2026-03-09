@@ -4,7 +4,7 @@ import apiFetch from "@/shared/http/fetch";
 type RatingReasonGetAllActiveResult = { reasons: RatingReason[] };
 
 export async function getAllActiveRatingReasons(): Promise<RatingReason[]> {
-    const response = await apiFetch(`/bff/rating-reasons/admin`, {
+    const response = await apiFetch(`/bff/rating-reasons`, {
         method: "GET"
     });
 
@@ -13,6 +13,21 @@ export async function getAllActiveRatingReasons(): Promise<RatingReason[]> {
     }
 
     const result = (await response.json()) as RatingReasonGetAllActiveResult;
+    return result.reasons;
+}
+
+type RatingReasonGetAllResult = { reasons: RatingReason[] };
+
+export async function getAllRatingReasons(): Promise<RatingReason[]> {
+    const response = await apiFetch(`/bff/rating-reasons/admin`, {
+        method: "GET"
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to load rating reasons");
+    }
+
+    const result = (await response.json()) as RatingReasonGetAllResult;
     return result.reasons;
 }
 

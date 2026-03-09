@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Backend.Contracts.Grpc";
+
+package identity;
+
+service IdentityService {
+  rpc GetLogin (GetLoginRequest) returns (GetLoginReply);
+}
+
+message GetLoginRequest {
+  int64 id = 1;
+}
+
+message GetLoginReply {
+  string login = 2;
+}

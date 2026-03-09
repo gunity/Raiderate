@@ -86,7 +86,6 @@ services:
       context: .
       dockerfile: Backend.Identity.Api/Dockerfile
     environment:
-      ASPNETCORE_URLS: http://+:3000
       Jwt__AccessTokenName: ${JWT_ACCESS_TOKEN_NAME}
       Jwt__RefreshTokenName: ${JWT_REFRESH_TOKEN_NAME}
       Jwt__Issuer: ${JWT_ISSUER}
@@ -138,6 +137,7 @@ services:
     environment:
       ASPNETCORE_URLS: http://+:3000
       Destination__PlayersGrpcUrl: "http://backend.players:5001"
+      Destination__IdentityGrpcUrl: "http://backend.identity:5001"
       Jwt__AccessTokenName: ${JWT_ACCESS_TOKEN_NAME}
       Jwt__RefreshTokenName: ${JWT_REFRESH_TOKEN_NAME}
       Jwt__Issuer: ${JWT_ISSUER}

@@ -5,6 +5,7 @@ import {getPlayer} from "@/shared/players/api";
 import {Player} from "@/shared/players/types";
 import {VoteComments} from "@/shared/votes/types";
 import {getComments} from "@/shared/votes/api";
+import SignedNumber from "@/shared/ui/number";
 
 export default function PlayerPage({nickname}: { nickname: string }) {
 
@@ -23,7 +24,6 @@ export default function PlayerPage({nickname}: { nickname: string }) {
 
     return (
         <div className="mx-auto w-full max-w-md px-6 py-6 grid gap-6">
-            {/* header info */}
             <div className="grid gap-0">
                 <div className="text-xs text-gray-500">nickname</div>
                 <div className="font-mono text-2xl">{player?.nickname ?? "-"}</div>
@@ -31,16 +31,10 @@ export default function PlayerPage({nickname}: { nickname: string }) {
                 <div className="flex items-center justify-between pt-3">
                     <div>
                         <div className="text-xs text-gray-500">reputation</div>
-                        <div
-                            className={[
-                                "font-mono text-2xl font-bold",
-                                (player?.rating ?? 0) > 0 ? "text-[#2afe7f]" : "",
-                                (player?.rating ?? 0) < 0 ? "text-[#fdd333]" : "",
-                                (player?.rating ?? 0) === 0 ? "text-gray-200" : "",
-                            ].join(" ")}
-                        >
-                            {(player?.rating ?? 0) > 0 ? `+${player?.rating}` : player?.rating ?? 0}
-                        </div>
+                        <SignedNumber
+                            value={player?.rating ?? 0}
+                            className="font-mono text-2xl font-bold"
+                        />
                     </div>
 
                     <div className="text-right">
@@ -49,12 +43,21 @@ export default function PlayerPage({nickname}: { nickname: string }) {
                     </div>
                 </div>
 
-                <div className="text-xs text-gray-500 pt-3">comments</div>
+                <div className="text-xs text-gray-500 pt-3">last comments</div>
                 {comments?.items?.length ? (
                     <div className="grid gap-2">
                         {comments.items.map((item, i) => (
-                            <div key={i} className="text-sm">
-                                {item.text}
+                            <div key={i}>
+                                <div className="flex justify-between w-full">
+                                    <span className="font-mono">{item.user_login}</span>
+                                    <SignedNumber
+                                        value={item?.delta ?? 0}
+                                        className="font-mono font-bold"
+                                    />
+                                </div>
+                                <div className="flex">
+                                    <span>{item.text}</span>
+                                </div>
                             </div>
                         ))}
                     </div>

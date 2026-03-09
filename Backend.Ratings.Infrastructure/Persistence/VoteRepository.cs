@@ -17,12 +17,15 @@ public class VoteRepository(AppDbContext context) : IVoteRepository
         return await context.Votes.AnyAsync(x => x.PlayerId == playerId && x.FromUserId == fromUserId, ct);
     }
 
-    public async Task<IReadOnlyList<Vote>> GetAllByPlayerIdReadonlyAsync(long playerId, int limit, CancellationToken ct = default)
+    public async Task<IReadOnlyList<Vote>> GetAllByPlayerIdReadonlyAsync(
+        long playerId, int limit,
+        CancellationToken ct = default)
     {
         return await context.Votes
             .AsNoTracking()
             .Where(x => x.PlayerId == playerId)
             .Take(limit)
+            .Include(x => x.Reason)
             .ToListAsync(ct);
     }
 }

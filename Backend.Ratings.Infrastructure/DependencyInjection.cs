@@ -82,8 +82,14 @@ public static class DependencyInjection
                 var destinationOptions = serviceProvider.GetRequiredService<IOptions<DestinationOptions>>().Value;
                 options.Address = new Uri(destinationOptions.PlayersGrpcUrl);
             });
-
             services.AddScoped<IPlayerClient, PlayersGrpcClient>();
+            
+            services.AddGrpcClient<IdentityService.IdentityServiceClient>((serviceProvider, options) =>
+            {
+                var destinationOptions = serviceProvider.GetRequiredService<IOptions<DestinationOptions>>().Value;
+                options.Address = new Uri(destinationOptions.IdentityGrpcUrl);
+            });
+            services.AddScoped<IIdentityClient, IdentityGrpcClient>();
         }
 
         void AddMassTransit()

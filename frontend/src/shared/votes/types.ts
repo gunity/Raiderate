@@ -3,5 +3,8 @@ export type VoteComments = {
 }
 
 export type VoteComment = {
+    user_login: string;
     text: string;
+    delta: number;
+    created_at: string;
 };

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Backend.Identity.Api.Grpc;
 using Backend.Identity.Api.Services;
 
 namespace Backend.Identity.Api;
@@ -14,6 +15,7 @@ public static class DependencyInjection
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
                 options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.SnakeCaseLower;
             });
+        services.AddGrpc();
         
         AddServices();
 
@@ -28,6 +30,7 @@ public static class DependencyInjection
     public static WebApplication UseApi(this WebApplication app)
     {
         app.MapControllers();
+        app.MapGrpcService<IdentityGrpcService>();
 
         return app;
     }
