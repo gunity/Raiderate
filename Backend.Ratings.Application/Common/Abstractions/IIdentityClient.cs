@@ -4,5 +4,5 @@ namespace Backend.Ratings.Application.Common.Abstractions;
 
 public interface IIdentityClient
 {
-    Task<GetLoginReply> GetLoginAsync(long id, CancellationToken ct = default);
+    Task<GetLoginsByUserIdReply> GetLoginAsync(long[] ids, CancellationToken ct = default);
 }

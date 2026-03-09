@@ -7,12 +7,17 @@ namespace Backend.Identity.Api.Grpc;
 
 public class IdentityGrpcService(IMediator mediator) : IdentityService.IdentityServiceBase
 {
-    public override async Task<GetLoginReply> GetLogin(GetLoginRequest request, ServerCallContext context)
+    public override async Task<GetLoginsByUserIdReply> GetLoginsByUserId(GetLoginsByUserIdRequest request, ServerCallContext context)
     {
-        var result = await mediator.Send(new GetLoginQuery(request.Id), context.CancellationToken);
-        return new GetLoginReply
+        var ids = request.Ids.ToArray();
+        var result = await mediator.Send(new GetLoginsByUserIdQuery(ids), context.CancellationToken);
+
+        var reply = new GetLoginsByUserIdReply();
+        reply.Items.AddRange(result.Items.Select(x => new UserLoginItem
         {
-            Login = result.Login,
-        };
+            Id = x.Id,
+            Login = x.Login
+        }));
+        return reply;
     }
 }

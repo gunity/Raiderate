@@ -14,11 +14,12 @@ public class UserRepository(AppDbContext context) : IUserRepository
             .FirstOrDefaultAsync(x => x.Login == login, ct);
     }
 
-    public async Task<User?> GetReadonlyByIdAsync(long id, CancellationToken ct = default)
+    public async Task<IReadOnlyList<User>> GetReadonlyByIdsAsync(long[] ids, CancellationToken ct = default)
     {
         return await context.Users
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id, ct);
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync(ct);
     }
 
     public async Task<bool> ExistsByLoginAsync(string login, CancellationToken ct = default)

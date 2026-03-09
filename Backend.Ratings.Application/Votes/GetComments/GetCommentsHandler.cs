@@ -11,19 +11,29 @@ public class GetCommentsHandler(
 {
     public async Task<GetCommentsResult> Handle(GetCommentsQuery request, CancellationToken cancellationToken)
     {
-        var votes = await voteRepository.GetAllByPlayerIdReadonlyAsync(request.PlayerId, request.Limit, cancellationToken);
+        var votes = await voteRepository.GetAllByPlayerIdReadonlyAsync(
+            request.PlayerId,
+            request.Limit,
+            cancellationToken);
 
-        var commentTasks = votes
+        var votesWithComments = votes
             .Where(x => !string.IsNullOrWhiteSpace(x.Comment))
-            .Select(async x =>
-            {
-                var login = await identityClient.GetLoginAsync(x.FromUserId, cancellationToken);
-                return new VoteComment(login.Login, x.Comment!, x.Reason.Value, x.CreatedAt);
-            })
             .ToList();
-        
-        var comments = await Task.WhenAll(commentTasks);
-        
+
+        var logins = await identityClient.GetLoginAsync(
+            votesWithComments.Select(x => x.FromUserId).Distinct().ToArray(),
+            cancellationToken);
+
+        var loginsByUserId = logins.Items.ToDictionary(x => x.Id, x => x.Login);
+
+        var comments = votesWithComments
+            .Select(x =>
+            {
+                var login = loginsByUserId.GetValueOrDefault(x.FromUserId, "unknown");
+                return new VoteComment(login, x.Comment!, x.Reason.Value, x.CreatedAt);
+            })
+            .ToArray();
+
         return new GetCommentsResult(comments);
     }
 }

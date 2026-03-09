@@ -5,13 +5,18 @@ option csharp_namespace = "Backend.Contracts.Grpc";
 package identity;
 
 service IdentityService {
-  rpc GetLogin (GetLoginRequest) returns (GetLoginReply);
+  rpc GetLoginsByUserId (GetLoginsByUserIdRequest) returns (GetLoginsByUserIdReply);
 }
 
-message GetLoginRequest {
+message GetLoginsByUserIdRequest {
+  repeated int64 ids = 1;
+}
+
+message UserLoginItem {
   int64 id = 1;
+  string login = 2;
 }
 
-message GetLoginReply {
-  string login = 2;
+message GetLoginsByUserIdReply {
+  repeated  UserLoginItem items = 1;
 }
