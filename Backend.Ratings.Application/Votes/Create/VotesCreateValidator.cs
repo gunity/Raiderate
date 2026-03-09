@@ -16,7 +16,6 @@ public class VotesCreateValidator : AbstractValidator<VotesCreateCommand>
             .NotEmpty();
 
         RuleFor(x => x.Comment)
-            .NotEmpty()
             .MaximumLength(VoteConstants.MaxCommentLength);
     }
 }

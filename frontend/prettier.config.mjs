@@ -1,0 +1,7 @@
+export default {
+  plugins: ["prettier-plugin-tailwindcss"],
+  tailwindStylesheet: "./src/app/globals.css",
+  semi: true,
+  singleQuote: false,
+  trailingComma: "all",
+};

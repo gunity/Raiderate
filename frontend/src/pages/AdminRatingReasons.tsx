@@ -1,117 +1,113 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import RatingReasonEditModal from "@/components/RatingReasonEditModal";
-import {RatingReason} from "@/shared/ratings/types";
-import {createRatingReason, getAllRatingReasons, updateRatingReason} from "@/shared/ratings/api";
+import { RatingReason } from "@/shared/ratings/types";
+import {
+  createRatingReason,
+  getAllRatingReasons,
+  updateRatingReason,
+} from "@/shared/ratings/api";
 
-export default function AdminRatingReasonsPage() {
+type Props = {
+  reasons: RatingReason[];
+};
 
-    const [items, setItems] = useState<RatingReason[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+export default function AdminRatingReasonsPage({ reasons }: Props) {
+  const [items, setItems] = useState<RatingReason[]>(reasons);
+  const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        (async () => {
-            setLoading(true);
-            setError(null);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editValue, setEditValue] = useState<RatingReason | null>(null);
 
-            try {
-                const items: RatingReason[] = await getAllRatingReasons();
-                setItems(items);
-            } catch (error: unknown) {
-                setError(error instanceof Error ? error.message : "error");
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, []);
+  function openModal(item: RatingReason) {
+    setEditValue(item);
+    setEditMode(true);
+  }
 
-    const [editMode, setEditMode] = useState<boolean>(false);
-    const [editValue, setEditValue] = useState<RatingReason | null>(null);
+  function closeModal() {
+    setEditValue(null);
+    setEditMode(false);
+  }
 
-    function openModal(item: RatingReason) {
-        setEditValue(item);
-        setEditMode(true);
+  async function saveModal(item: RatingReason): Promise<void> {
+    try {
+      if (item.id == null) {
+        const id = await createRatingReason(item);
+        const created: RatingReason = { ...item, id };
+
+        setItems((prev) => [created, ...prev]);
+      } else {
+        await updateRatingReason(item);
+
+        setItems((prev) => prev.map((x) => (x.id === item.id ? item : x)));
+      }
+
+      closeModal();
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "Save failed");
     }
+  }
 
-    function closeModal() {
-        setEditValue(null);
-        setEditMode(false);
-    }
+  return (
+    <div className="m-2 grid gap-3">
+      {items.map((item) => (
+        <div
+          key={item.id}
+          className="flex w-100 items-center justify-between rounded border p-2"
+        >
+          <div>
+            <div className="font-mono text-sm">{item.code}</div>
+            <div className="text-xs text-gray-500">id: {item.id}</div>
+          </div>
 
-    async function saveModal(item: RatingReason): Promise<void> {
-        try {
-            if (item.id == null) {
-                const id = await createRatingReason(item);
-                const created: RatingReason = {...item, id};
+          <div className="flex items-center gap-4">
+            <div
+              className={[
+                "text-sm font-semibold",
+                item.value > 0 ? "text-green-700" : "",
+                item.value < 0 ? "text-red-700" : "",
+                item.value === 0 ? "text-gray-700" : "",
+              ].join(" ")}
+            >
+              {item.value > 0 ? `+${item.value}` : item.value}
+            </div>
 
-                setItems((prev) => [created, ...prev]);
-            } else {
-                await updateRatingReason(item);
-
-                setItems((prev) => prev.map((x) => (x.id === item.id) ? item : x));
-            }
-
-            closeModal();
-        } catch (error: unknown) {
-            setError(error instanceof Error ? error.message : "Save failed");
-        }
-    }
-
-    return (
-        <div className="grid gap-3 m-2">
-            {items.map((item) => (
-                <div
-                    key={item.id}
-                    className="rounded border w-100 p-2 flex items-center justify-between"
-                >
-                    <div>
-                        <div className="text-sm font-mono">{item.code}</div>
-                        <div className="text-xs text-gray-500">id: {item.id}</div>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        <div
-                            className={[
-                                "text-sm font-semibold",
-                                item.value > 0 ? "text-green-700" : "",
-                                item.value < 0 ? "text-red-700" : "",
-                                item.value === 0 ? "text-gray-700" : "",
-                            ].join(" ")}
-                        >
-                            {item.value > 0 ? `+${item.value}` : item.value}
-                        </div>
-
-                        <span
-                            className={[
-                                "text-xs rounded p-2 border w-20 text-center",
-                                item.is_active ? "bg-green-50 text-green-800 border-green-200" : "bg-gray-50 text-gray-700 border-gray-200",
-                            ].join(" ")}
-                        >
-                            {item.is_active ? "active" : "disabled"}
-                        </span>
-
-                        <button
-                            className="text-xs border rounded p-2 w-16 cursor-pointer"
-                            onClick={() => openModal(item)}
-                        >
-                            Edit
-                        </button>
-                    </div>
-                </div>
-            ))}
+            <span
+              className={[
+                "w-20 rounded border p-2 text-center text-xs",
+                item.is_active
+                  ? "border-green-200 bg-green-50 text-green-800"
+                  : "border-gray-200 bg-gray-50 text-gray-700",
+              ].join(" ")}
+            >
+              {item.is_active ? "active" : "disabled"}
+            </span>
 
             <button
-                className="border rounded p-2 w-16 cursor-pointer"
-                onClick={() => openModal({code: "", value: 0, is_active: true})}
+              className="w-16 cursor-pointer rounded border p-2 text-xs"
+              onClick={() => openModal(item)}
             >
-                Create
+              Edit
             </button>
-
-            {editMode && editValue && (
-                <RatingReasonEditModal item={editValue} onClose={closeModal} onSave={saveModal}/>
-            )}
+          </div>
         </div>
-    );
+      ))}
+
+      <button
+        className="w-16 cursor-pointer rounded border p-2"
+        onClick={() => openModal({ code: "", value: 0, is_active: true })}
+      >
+        Create
+      </button>
+
+      {editMode && editValue && (
+        <RatingReasonEditModal
+          item={editValue}
+          onClose={closeModal}
+          onSave={saveModal}
+        />
+      )}
+    </div>
+  );
 }

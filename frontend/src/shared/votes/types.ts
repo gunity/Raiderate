@@ -1,10 +1,10 @@
-export type VoteComments = {
-    items: VoteComment[];
-}
+export type Comments = {
+  items: Comment[];
+};
 
-export type VoteComment = {
-    user_login: string;
-    text: string;
-    delta: number;
-    created_at: string;
+export type Comment = {
+  user_login: string;
+  text: string;
+  delta: number;
+  created_at: string;
 };

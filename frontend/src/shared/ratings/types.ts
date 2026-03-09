@@ -1,6 +1,6 @@
 export type RatingReason = {
-    id?: number;
-    code: string;
-    value: number;
-    is_active: boolean;
-}
+  id?: number;
+  code: string;
+  value: number;
+  is_active: boolean;
+};

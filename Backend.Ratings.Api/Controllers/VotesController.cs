@@ -21,7 +21,6 @@ public class VotesController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize]
     [HttpGet]
     public async Task<ActionResult<GetCommentsResult>> GetCommentsAsync(
         [FromQuery] long playerId,

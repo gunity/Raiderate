@@ -1,15 +1,18 @@
 import "server-only";
 
 import isAdmin from "@/shared/common/api";
-import {notFound} from "next/navigation";
+import { notFound } from "next/navigation";
+import { getAllRatingReasonsServer } from "@/shared/ratings/api.server";
 
 export default async function Page() {
-    const adminPrivileges = await isAdmin();
+  const adminPrivileges = await isAdmin();
 
-    if (!adminPrivileges) {
-        notFound();
-    }
+  if (!adminPrivileges) {
+    notFound();
+  }
 
-    const Page = (await import("@/pages/AdminRatingReasons")).default;
-    return <Page/>;
+  const reasons = await getAllRatingReasonsServer();
+
+  const Page = (await import("@/pages/AdminRatingReasons")).default;
+  return <Page reasons={reasons} />;
 }
