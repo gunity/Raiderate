@@ -22,6 +22,7 @@ export default function RatePage({ reasons }: Props) {
   const router = useRouter();
 
   async function handleSubmit() {
+    setSending(true);
     if (reasonId == null) {
       setError("Reason is required");
       return;
@@ -32,6 +33,8 @@ export default function RatePage({ reasons }: Props) {
       router.push(`/player/${nickname}`);
     } catch (error: unknown) {
       setError("Failed to create vote");
+    } finally {
+      setSending(false);
     }
   }
 
