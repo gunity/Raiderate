@@ -18,7 +18,7 @@ public class RatingReason
 
     public void UpdateCode(string requestCode)
     {
-        Code = requestCode.Trim();
+        Code = requestCode.ToLowerInvariant().Trim();
     }
 
     public void UpdateValue(int value)
