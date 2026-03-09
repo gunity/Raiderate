@@ -6,7 +6,10 @@ export default async function apiFetch(
     ...init,
     cache: "no-store",
     credentials: "include",
-    headers: { "content-type": "application/json" },
+    headers: {
+      "content-type": "application/json",
+      ...init?.headers,
+    },
   });
 
   if (first.status !== 401) {
@@ -25,5 +28,9 @@ export default async function apiFetch(
   return await fetch(input, {
     ...init,
     credentials: "include",
+    headers: {
+      "content-type": "application/json",
+      ...init?.headers,
+    },
   });
 }
