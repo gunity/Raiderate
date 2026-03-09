@@ -29,11 +29,10 @@ export default function RatePage({ reasons }: Props) {
 
     try {
       await createVote(nickname, reasonId, comment);
+      router.push(`/player/${nickname}`);
     } catch (error: unknown) {
       setError("Failed to create vote");
     }
-
-    router.push(`/player/${nickname}`);
   }
 
   return (
