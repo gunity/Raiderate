@@ -16,9 +16,7 @@ export default function Header() {
   const logoutLocal = useAuthStore((s) => s.logout);
 
   useEffect(() => {
-    (async () => {
-      await loadSelf();
-    })();
+    void loadSelf();
   }, [loadSelf]);
 
   const logout = async () => {

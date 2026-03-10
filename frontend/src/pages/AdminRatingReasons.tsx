@@ -1,13 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import RatingReasonEditModal from "@/components/RatingReasonEditModal";
 import { RatingReason } from "@/shared/ratings/types";
-import {
-  createRatingReason,
-  getAllRatingReasons,
-  updateRatingReason,
-} from "@/shared/ratings/api";
+import { createRatingReason, updateRatingReason } from "@/shared/ratings/api";
 
 type Props = {
   reasons: RatingReason[];
@@ -32,7 +28,7 @@ export default function AdminRatingReasonsPage({ reasons }: Props) {
 
   async function saveModal(item: RatingReason): Promise<void> {
     try {
-      if (item.id == null) {
+      if (item.id === undefined) {
         const id = await createRatingReason(item);
         const created: RatingReason = { ...item, id };
 

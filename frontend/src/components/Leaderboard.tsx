@@ -13,9 +13,7 @@ export default function LeaderboardView({ leaderboard }: Props) {
           className="flex items-center justify-between p-1"
         >
           <div className="flex items-center gap-3">
-            <span className="text-right text-gray-500">
-              {item.position + 1}
-            </span>
+            <span className="text-right text-gray-500">{item.position}</span>
             <span>{item.nickname}</span>
           </div>
 

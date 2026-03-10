@@ -33,7 +33,7 @@ public class ExceptionHandlingMiddleware(
                     code = StatusCodes.Status400BadRequest;
                     message = validationException.Errors
                         .Select(x => x.ErrorMessage)
-                        .Aggregate((x, y) => $"{x}\n{y}");
+                        .Aggregate((x, y) => $"{x};{y}");
                     break;
                 default:
                     code = StatusCodes.Status500InternalServerError;
@@ -41,7 +41,8 @@ public class ExceptionHandlingMiddleware(
                     break;
             }
 
-            logger.LogError(exception,
+            var logLevel = code == StatusCodes.Status500InternalServerError ? LogLevel.Error : LogLevel.Information;
+            logger.Log(logLevel, exception,
                 "code=({code}), trace ID=({traceID}), message=({message})",
                 code, traceId, message);
 

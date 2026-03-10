@@ -71,9 +71,9 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             className="rounded border border-[#1d2226] p-2"
           />
-          <div hidden={!error} className="text-center text-sm text-red-700">
-            {error}
-          </div>
+          {error && (
+            <div className="text-center text-sm text-red-700">{error}</div>
+          )}
           <button
             type="submit"
             className="cursor-pointer pt-3"

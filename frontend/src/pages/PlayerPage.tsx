@@ -67,10 +67,7 @@ export default function PlayerPage({ player, comments }: Props) {
         <Label>last comments</Label>
         {comments.length > 0 ? (
           comments.map((comment: Comment) => (
-            <CommentItem
-              key={`${comment.user_login}-${comment.created_at}`}
-              comment={comment}
-            />
+            <CommentItem key={comment.id} comment={comment} />
           ))
         ) : (
           <div>No comments yet</div>

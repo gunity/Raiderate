@@ -13,13 +13,14 @@ public class GetOrCreatePlayerHandler(
 {
     public async Task<GetOrCreatePlayerResult> Handle(GetOrCreatePlayerCommand request, CancellationToken ct)
     {
-        var player = await playerRepository.GetReadonlyByNicknameAsync(request.Nickname, ct);
+        var nickname = request.Nickname.ToLowerInvariant().Trim();
+        var player = await playerRepository.GetReadonlyByNicknameAsync(nickname, ct);
         if (player is not null)
         {
             return new GetOrCreatePlayerResult(player.Id, player.Nickname);
         }
 
-        player = new Player(request.Nickname);
+        player = new Player(nickname);
         
         try
         {
@@ -31,7 +32,7 @@ public class GetOrCreatePlayerHandler(
         catch (DbUpdateException exception) 
             when (exception.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
         {
-            player = await playerRepository.GetReadonlyByNicknameAsync(request.Nickname, ct);
+            player = await playerRepository.GetReadonlyByNicknameAsync(nickname, ct);
             if (player is null)
             {
                 throw;

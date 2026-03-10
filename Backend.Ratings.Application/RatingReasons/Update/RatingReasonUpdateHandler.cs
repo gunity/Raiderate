@@ -17,20 +17,27 @@ public class RatingReasonUpdateHandler(
             throw new NotFoundAppException("Rating reason not found");
         }
 
+        var changed = false;
         if (!string.IsNullOrWhiteSpace(request.Code))
         {
             reason.UpdateCode(request.Code);
+            changed = true;
         }
         if (request.Value.HasValue)
         {
             reason.UpdateValue(request.Value.Value);
+            changed = true;
         }
         if (request.IsActive.HasValue)
         {
             reason.UpdateIsActive(request.IsActive.Value);
+            changed = true;
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        if (changed)
+        {
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+        }
         return Unit.Value;
     }
 }

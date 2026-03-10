@@ -13,7 +13,6 @@ type Props = {
 
 export default function RatePage({ reasons }: Props) {
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const [sending, setSending] = useState<boolean>(false);
   const [nickname, setNickname] = useState("");
   const [comment, setComment] = useState("");
@@ -26,6 +25,9 @@ export default function RatePage({ reasons }: Props) {
     if (reasonId == null) {
       setError("Reason is required");
       return;
+    }
+    if (nickname == null) {
+      setError("Nickname is required");
     }
 
     try {
@@ -53,6 +55,9 @@ export default function RatePage({ reasons }: Props) {
           value={reasonId ?? ""}
           onChange={(e) => setReasonId(e.target.value)}
         >
+          <option value="" disabled>
+            Select a reason
+          </option>
           {reasons.map((reason) => (
             <option key={reason.id} value={reason.id}>
               {getRatingReasonLabel(reason.code)}

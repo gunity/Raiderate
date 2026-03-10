@@ -26,7 +26,7 @@ export default function RegisterPage() {
 
     const fallback = "Register failed";
 
-    if (password != passwordConfirm) {
+    if (password !== passwordConfirm) {
       setError("Passwords do not match");
       setLoading(false);
       return;
@@ -86,13 +86,13 @@ export default function RegisterPage() {
             onChange={(e) => setPasswordConfirm(e.target.value)}
             className="rounded border border-[#1d2226] p-2"
           />
-          <div hidden={!error} className="text-center text-sm text-red-700">
-            {error}
-          </div>
+          {error && (
+            <div className="text-center text-sm text-red-700">{error}</div>
+          )}
           <button
             type="submit"
             className="cursor-pointer pt-3"
-            disabled={loading || !login || !password}
+            disabled={loading || !login || !password || !passwordConfirm}
           >
             {!loading ? (
               <div className="inline-flex items-center gap-2">

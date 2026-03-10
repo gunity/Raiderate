@@ -1,6 +1,6 @@
 using System.Security.Claims;
+using Backend.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Backend.Shared.Services;
 
@@ -17,7 +17,7 @@ public class CurrentPlayer(
             var rawId = GetClaimValue(ClaimTypes.NameIdentifier);
             if (!Guid.TryParse(rawId, out var id))
             {
-                throw new Exception($"Invalid {nameof(Id)}, check {nameof(IsAuthenticated)} first");
+                throw new UnauthorizedAppException("Invalid ID");
             }
 
             return id;
@@ -31,7 +31,7 @@ public class CurrentPlayer(
             var rawLogin = User?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             if (string.IsNullOrEmpty(rawLogin))
             {
-                throw new Exception($"Invalid {nameof(Login)}, check {nameof(IsAuthenticated)} first");
+                throw new UnauthorizedAppException($"Invalid {nameof(Login)}");
             }
 
             var login = rawLogin.Trim();
@@ -46,7 +46,7 @@ public class CurrentPlayer(
             var rawRole = User?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             if (string.IsNullOrEmpty(rawRole))
             {
-                throw new Exception($"Invalid {nameof(Role)}, check {nameof(IsAuthenticated)} first");
+                throw new UnauthorizedAppException($"Invalid {nameof(Role)}");
             }
             
             var role = rawRole.Trim();
