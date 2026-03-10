@@ -1,5 +1,5 @@
 export type Player = {
-  id: number;
+  id: string;
   nickname: string;
   rating: number;
   votes_count: number;

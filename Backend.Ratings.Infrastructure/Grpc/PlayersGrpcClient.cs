@@ -5,10 +5,10 @@ namespace Backend.Ratings.Infrastructure.Grpc;
 
 public class PlayersGrpcClient(PlayersService.PlayersServiceClient client) : IPlayerClient
 {
-    public async Task<EnsurePlayerReply> EnsurePlayerAsync(string nickname, CancellationToken ct)
+    public async Task<GetOrCreatePlayerReply> EnsurePlayerAsync(string nickname, CancellationToken ct)
     {
-        return await client.EnsurePlayerAsync(
-            new EnsurePlayerRequest { Nickname = nickname },
+        return await client.GetOrCreatePlayerAsync(
+            new GetOrCreatePlayerRequest { Nickname = nickname },
             cancellationToken: ct);
     }
 }

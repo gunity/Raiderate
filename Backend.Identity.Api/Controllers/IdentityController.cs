@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Backend.Identity.Api.Services;
 using Backend.Identity.Application.Common.Abstractions;
@@ -6,16 +5,14 @@ using Backend.Identity.Application.Login;
 using Backend.Identity.Application.Register;
 using Backend.Identity.Application.Self;
 using Backend.Shared.Exceptions;
-using Backend.Shared.Options;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace Backend.Identity.Api.Controllers;
 
 [ApiController]
 [Route("api/identity")]
-public class Controller(
+public class IdentityController(
     IMediator mediator,
     ICookieService cookieService,
     ITokenService tokenService
@@ -72,7 +69,10 @@ public class Controller(
             throw new UnauthorizedAppException("Refresh token is invalid");
         }
 
-        var id = long.Parse(claims.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        if (!Guid.TryParse(claims.FindFirstValue(ClaimTypes.NameIdentifier), out var id))
+        {
+            throw new UnauthorizedAppException();
+        }
         var login = claims.FindFirstValue(ClaimTypes.Name)!;
         var role = claims.FindFirstValue(ClaimTypes.Role)!;
 

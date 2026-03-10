@@ -3,6 +3,7 @@ export type Comments = {
 };
 
 export type Comment = {
+  id: string;
   user_login: string;
   text: string;
   delta: number;

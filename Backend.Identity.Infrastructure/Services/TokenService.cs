@@ -28,12 +28,12 @@ public sealed class TokenService(IOptions<JwtOptions> jwtOptions) : ITokenServic
         ClockSkew = TimeSpan.FromSeconds(30)
     };
     
-    public string GetAccessToken(long id, string login, string role)
+    public string GetAccessToken(Guid id, string login, string role)
     {
         return IssueToken(id, login, role, DateTime.UtcNow.AddMinutes(jwtOptions.Value.AccessTokenExpireMinutes));
     }
 
-    public string GetRefreshToken(long id, string login, string role)
+    public string GetRefreshToken(Guid id, string login, string role)
     {
         return IssueToken(id, login, role, DateTime.UtcNow.AddDays(jwtOptions.Value.RefreshTokenExpireDays));
     }
@@ -50,7 +50,7 @@ public sealed class TokenService(IOptions<JwtOptions> jwtOptions) : ITokenServic
         return new ClaimsPrincipal(result.ClaimsIdentity);
     }
 
-    private string IssueToken(long id, string login, string role, DateTime expires)
+    private string IssueToken(Guid id, string login, string role, DateTime expires)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

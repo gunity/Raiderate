@@ -42,10 +42,10 @@ public class RatingReasonsController(
         return Ok(result);
     }
 
-    [HttpPut("admin/{id:long}")]
+    [HttpPut("admin/{id:guid}")]
     [Authorize(Roles = AppRoleWire.Admin)]
     public async Task<IActionResult> UpdateAsync(
-        [FromRoute] long id,
+        [FromRoute] Guid id,
         [FromBody] RatingReasonUpdateBody body,
         CancellationToken ct = default)
     {

@@ -13,27 +13,31 @@ type Props = {
 
 export default function RatePage({ reasons }: Props) {
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const [sending, setSending] = useState<boolean>(false);
   const [nickname, setNickname] = useState("");
   const [comment, setComment] = useState("");
-  const [reasonId, setReasonId] = useState<number | null>(null);
+  const [reasonId, setReasonId] = useState<string | null>(null);
 
   const router = useRouter();
 
   async function handleSubmit() {
+    setSending(true);
     if (reasonId == null) {
       setError("Reason is required");
       return;
     }
+    if (nickname == null) {
+      setError("Nickname is required");
+    }
 
     try {
       await createVote(nickname, reasonId, comment);
+      router.push(`/player/${nickname}`);
     } catch (error: unknown) {
       setError("Failed to create vote");
+    } finally {
+      setSending(false);
     }
-
-    router.push(`/player/${nickname}`);
   }
 
   return (
@@ -49,8 +53,11 @@ export default function RatePage({ reasons }: Props) {
         <select
           className="rounded border border-[#1d2226] p-2"
           value={reasonId ?? ""}
-          onChange={(e) => setReasonId(Number(e.target.value))}
+          onChange={(e) => setReasonId(e.target.value)}
         >
+          <option value="" disabled>
+            Select a reason
+          </option>
           {reasons.map((reason) => (
             <option key={reason.id} value={reason.id}>
               {getRatingReasonLabel(reason.code)}

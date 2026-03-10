@@ -3,7 +3,7 @@ import { env } from "@/shared/env";
 import apiFetchServer from "@/shared/http/fetch.server";
 
 export async function getCommentsServer(
-  playerId: number,
+  playerId: string,
   limit: number,
 ): Promise<Comments> {
   const response = await apiFetchServer(

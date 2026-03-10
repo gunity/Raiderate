@@ -14,7 +14,7 @@ public class PlayerRepository(AppDbContext context) : IPlayerRepository
             .FirstOrDefaultAsync(x => x.Nickname == nickname, ct);
     }
 
-    public async Task<Player?> GetByIdAsync(long id, CancellationToken ct = default)
+    public async Task<Player?> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
         return await context.Players
             .FirstOrDefaultAsync(x => x.Id == id, ct);

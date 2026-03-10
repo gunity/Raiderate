@@ -23,12 +23,12 @@ public class VotesController(IMediator mediator) : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<GetCommentsResult>> GetCommentsAsync(
-        [FromQuery] long playerId,
+        [FromQuery] Guid playerId,
         [FromQuery] int limit = 5,
         CancellationToken ct = default)
     {
         limit = Math.Clamp(limit, 1, 50);
-        
+
         var result = await mediator.Send(new GetCommentsQuery(playerId, limit), ct);
         
         return Ok(result);

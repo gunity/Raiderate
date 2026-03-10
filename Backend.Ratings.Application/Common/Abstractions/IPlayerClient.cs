@@ -4,5 +4,5 @@ namespace Backend.Ratings.Application.Common.Abstractions;
 
 public interface IPlayerClient
 {
-    Task<EnsurePlayerReply> EnsurePlayerAsync(string nickname, CancellationToken ct);
+    Task<GetOrCreatePlayerReply> EnsurePlayerAsync(string nickname, CancellationToken ct);
 }

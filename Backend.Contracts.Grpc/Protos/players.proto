@@ -5,14 +5,14 @@ option csharp_namespace = "Backend.Contracts.Grpc";
 package players;
 
 service PlayersService {
-  rpc EnsurePlayer (EnsurePlayerRequest) returns (EnsurePlayerReply);
+  rpc GetOrCreatePlayer (GetOrCreatePlayerRequest) returns (GetOrCreatePlayerReply);
 }
 
-message EnsurePlayerRequest {
+message GetOrCreatePlayerRequest {
   string nickname = 1;
 }
 
-message EnsurePlayerReply {
-  int64 id = 1;
+message GetOrCreatePlayerReply {
+  string id = 1;
   string nickname = 2;
 }

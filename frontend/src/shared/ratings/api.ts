@@ -16,9 +16,9 @@ export async function getAllRatingReasons(): Promise<RatingReason[]> {
   return result.reasons;
 }
 
-type RatingReasonCreateResult = { id: number };
+type RatingReasonCreateResult = { id: string };
 
-export async function createRatingReason(item: RatingReason): Promise<number> {
+export async function createRatingReason(item: RatingReason): Promise<string> {
   const response = await apiFetch(`/bff/rating-reasons/admin`, {
     method: "POST",
     body: JSON.stringify({

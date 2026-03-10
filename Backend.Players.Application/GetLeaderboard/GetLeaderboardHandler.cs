@@ -17,7 +17,7 @@ public class GetLeaderboardHandler(IPlayerRepository playerRepository) : IReques
         };
 
         var rows = items
-            .Select((x, position) => new LeaderboardRow(position, x.Nickname, x.Rating))
+            .Select((x, position) => new LeaderboardRow(position + 1, x.Nickname, x.Rating))
             .ToList();
         
         return new GetLeaderboardResult(rows);

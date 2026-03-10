@@ -4,6 +4,7 @@ import { Player } from "@/shared/players/types";
 import { Comment } from "@/shared/votes/types";
 import SignedNumber from "@/shared/ui/number";
 import { ReactNode } from "react";
+import getLocalDateTime from "@/shared/common/datetime";
 
 function Label({ children }: { children: ReactNode }) {
   return <div className="text-xs text-gray-500">{children}</div>;
@@ -18,7 +19,7 @@ function CommentItem({ comment }: { comment: Comment }) {
         </div>
         <div className="flex gap-2">
           <span className="text-gray-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-            {new Date(comment.created_at).toLocaleDateString()}
+            {getLocalDateTime(comment.created_at)}
           </span>
           <SignedNumber value={comment.delta} className="font-mono font-bold" />
         </div>
@@ -66,10 +67,7 @@ export default function PlayerPage({ player, comments }: Props) {
         <Label>last comments</Label>
         {comments.length > 0 ? (
           comments.map((comment: Comment) => (
-            <CommentItem
-              key={`${comment.user_login}-${comment.created_at}`}
-              comment={comment}
-            />
+            <CommentItem key={comment.id} comment={comment} />
           ))
         ) : (
           <div>No comments yet</div>

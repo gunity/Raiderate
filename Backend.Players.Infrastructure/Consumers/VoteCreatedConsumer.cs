@@ -10,7 +10,7 @@ public class VoteCreatedConsumer(IMediator mediator) : IConsumer<VoteCreated>
     public async Task Consume(ConsumeContext<VoteCreated> context)
     {
         var message = context.Message;
-        var command = new ApplyVoteCommand(message.PlayerId, message.Delta);//, message.FromUserId, message.ReasonId);
+        var command = new ApplyVoteCommand(message.VoteId, message.PlayerId, message.Delta);
         await mediator.Send(command, context.CancellationToken);
     }
 }

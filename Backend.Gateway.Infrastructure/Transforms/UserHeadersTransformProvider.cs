@@ -43,6 +43,7 @@ internal sealed class UserHeadersTransformProvider(
         {
             var headers = transformContext.ProxyRequest.Headers;
 
+            headers.Remove(AuthHeaders.SecretKey);
             headers.Remove(AuthHeaders.UserId);
             headers.Remove(AuthHeaders.UserLogin);
             headers.Remove(AuthHeaders.UserRole);
@@ -76,6 +77,7 @@ internal sealed class UserHeadersTransformProvider(
             var login = principal.FindFirstValue(ClaimTypes.Name);
             var role = principal.FindFirstValue(ClaimTypes.Role);
 
+            headers.TryAddWithoutValidation(AuthHeaders.SecretKey, jwtOptions.Value.Key);
             if (!string.IsNullOrWhiteSpace(id))
             {
                 headers.TryAddWithoutValidation(AuthHeaders.UserId, id);

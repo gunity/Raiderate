@@ -1,11 +1,11 @@
 using Backend.Players.Domain.Players;
 using FluentValidation;
 
-namespace Backend.Players.Application.EnsurePlayer;
+namespace Backend.Players.Application.GetOrCreate;
 
-public class EnsurePlayerValidator : AbstractValidator<EnsurePlayerCommand>
+public class GetOrCreatePlayerValidator : AbstractValidator<GetOrCreatePlayerCommand>
 {
-    public EnsurePlayerValidator()
+    public GetOrCreatePlayerValidator()
     {
         RuleFor(x => x.Nickname)
             .NotEmpty()

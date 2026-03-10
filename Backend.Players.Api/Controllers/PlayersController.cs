@@ -7,7 +7,7 @@ namespace Backend.Players.Api.Controllers;
 
 [ApiController]
 [Route("api/players")]
-public class Controller(
+public class PlayersController(
     IMediator mediator
 ) : ControllerBase
 {

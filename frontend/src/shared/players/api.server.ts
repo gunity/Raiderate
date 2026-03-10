@@ -23,7 +23,7 @@ export async function getLeaderboardServer(
   type: LeaderboardType,
   limit: number,
 ): Promise<Leaderboard> {
-  const response = await apiFetch(
+  const response = await apiFetchServer(
     `${env.gatewayInternalUrl}/api/players/leaderboard?type=${type}&limit=${limit}`,
     {
       method: "GET",
