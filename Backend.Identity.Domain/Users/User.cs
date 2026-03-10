@@ -5,7 +5,7 @@ namespace Backend.Identity.Domain.Users;
 
 public class User
 {
-    public long Id { get; private set; } 
+    public Guid Id { get; private set; } 
     public string Login { get;  private set; } = null!;
     public string PasswordHash { get; private set; } = null!;
     public AppRole Role { get; private set; }
@@ -14,6 +14,7 @@ public class User
 
     public User(string login, string passwordHash, AppRole role = AppRole.User)
     {
+        Id = Guid.NewGuid();
         Login = NormalizeLogin(login);
         PasswordHash = passwordHash;
         Role = role;

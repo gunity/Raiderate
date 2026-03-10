@@ -29,7 +29,7 @@ public class GetCommentsHandler(
         var comments = votesWithComments
             .Select(x =>
             {
-                var login = loginsByUserId.GetValueOrDefault(x.FromUserId, "unknown");
+                var login = loginsByUserId.GetValueOrDefault(x.FromUserId.ToString(), "unknown");
                 return new VoteComment(login, x.Comment!, x.Reason.Value, x.CreatedAt);
             })
             .ToArray();

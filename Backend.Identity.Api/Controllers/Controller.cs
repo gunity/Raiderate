@@ -72,7 +72,7 @@ public class Controller(
             throw new UnauthorizedAppException("Refresh token is invalid");
         }
 
-        var id = long.Parse(claims.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var id = Guid.Parse(claims.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var login = claims.FindFirstValue(ClaimTypes.Name)!;
         var role = claims.FindFirstValue(ClaimTypes.Role)!;
 

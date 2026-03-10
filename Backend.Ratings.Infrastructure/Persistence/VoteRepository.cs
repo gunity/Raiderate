@@ -12,13 +12,13 @@ public class VoteRepository(AppDbContext context) : IVoteRepository
         await context.Votes.AddAsync(vote, ct);
     }
 
-    public async Task<bool> ExistsAsync(long playerId, long fromUserId, CancellationToken ct = default)
+    public async Task<bool> ExistsAsync(Guid playerId, Guid fromUserId, CancellationToken ct = default)
     {
         return await context.Votes.AnyAsync(x => x.PlayerId == playerId && x.FromUserId == fromUserId, ct);
     }
 
     public async Task<IReadOnlyList<Vote>> GetAllByPlayerIdReadonlyAsync(
-        long playerId, int limit,
+        Guid playerId, int limit,
         CancellationToken ct = default)
     {
         return await context.Votes

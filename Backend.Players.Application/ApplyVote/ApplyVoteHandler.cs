@@ -11,7 +11,7 @@ public class ApplyVoteHandler(
 {
     public async Task<Unit> Handle(ApplyVoteCommand request, CancellationToken cancellationToken)
     {
-        var playerId =  request.PlayerId;
+        var playerId = request.PlayerId;
         var delta = request.Delta;
 
         var player = await playerRepository.GetByIdAsync(playerId, cancellationToken);

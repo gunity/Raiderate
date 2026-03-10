@@ -4,6 +4,6 @@ namespace Backend.Ratings.Application.Votes.Create;
 
 public sealed record VotesCreateCommand(
     string Nickname,
-    long ReasonId,
+    Guid ReasonId,
     string Comment
 ) : ICommand<VotesCreateResult>;

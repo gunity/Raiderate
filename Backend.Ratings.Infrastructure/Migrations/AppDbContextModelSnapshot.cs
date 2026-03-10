@@ -24,11 +24,9 @@ namespace Backend.Ratings.Infrastructure.Migrations
 
             modelBuilder.Entity("Backend.Ratings.Domain.RatingReasons.RatingReason", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -53,11 +51,9 @@ namespace Backend.Ratings.Infrastructure.Migrations
 
             modelBuilder.Entity("Backend.Ratings.Domain.Votes.Vote", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(128)
@@ -66,14 +62,14 @@ namespace Backend.Ratings.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("FromUserId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("FromUserId")
+                        .HasColumnType("uuid");
 
-                    b.Property<long>("PlayerId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
 
-                    b.Property<long>("ReasonId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ReasonId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 

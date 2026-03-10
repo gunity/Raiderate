@@ -1,8 +1,8 @@
 namespace Backend.Contracts.Events;
 
 public sealed record VoteCreated(
-    long PlayerId,
+    Guid PlayerId,
     int Delta,
-    long FromUserId,
-    long ReasonId
+    Guid FromUserId,
+    Guid ReasonId
 );

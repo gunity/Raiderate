@@ -10,12 +10,12 @@ public class CurrentPlayer(
 {
     public bool IsAuthenticated => User?.Identity?.IsAuthenticated ?? false;
 
-    public long Id
+    public Guid Id
     {
         get
         {
             var rawId = GetClaimValue(ClaimTypes.NameIdentifier);
-            if (!long.TryParse(rawId, out var id))
+            if (!Guid.TryParse(rawId, out var id))
             {
                 throw new Exception($"Invalid {nameof(Id)}, check {nameof(IsAuthenticated)} first");
             }

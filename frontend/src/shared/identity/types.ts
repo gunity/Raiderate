@@ -1,1 +1,1 @@
-export type IdentitySelf = { id: number; login: string; role: string };
+export type IdentitySelf = { id: string; login: string; role: string };

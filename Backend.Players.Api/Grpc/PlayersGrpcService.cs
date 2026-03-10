@@ -12,7 +12,7 @@ public class PlayersGrpcService(IMediator mediator) : PlayersService.PlayersServ
         var result = await mediator.Send(new GetOrCreatePlayerCommand(request.Nickname), context.CancellationToken);
         return new GetOrCreatePlayerReply
         {
-            Id = result.Id,
+            Id = result.Id.ToString(),
             Nickname = result.Nickname
         };
     }

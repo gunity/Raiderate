@@ -5,10 +5,10 @@ namespace Backend.Ratings.Infrastructure.Grpc;
 
 public class IdentityGrpcClient(IdentityService.IdentityServiceClient client) : IIdentityClient
 {
-    public async Task<GetLoginsByUserIdReply> GetLoginAsync(long[] ids, CancellationToken ct)
+    public async Task<GetLoginsByUserIdReply> GetLoginAsync(Guid[] ids, CancellationToken ct)
     {
         var request = new GetLoginsByUserIdRequest();
-        request.Ids.AddRange(ids);
+        request.Ids.AddRange(ids.Select(x => x.ToString()));
         
         return await client.GetLoginsByUserIdAsync(request, cancellationToken: ct);
     }

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -15,8 +15,7 @@ namespace Backend.Players.Infrastructure.Migrations
                 name: "Players",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Nickname = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     Rating = table.Column<int>(type: "integer", nullable: false),
                     VotesCount = table.Column<int>(type: "integer", nullable: false, defaultValue: 0)

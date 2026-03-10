@@ -3,7 +3,7 @@ import { Comments } from "@/shared/votes/types";
 
 export async function createVote(
   nickname: string,
-  reasonId: number,
+  reasonId: string,
   comment: string,
 ): Promise<void> {
   const response = await apiFetch(`/bff/votes`, {

@@ -17,7 +17,7 @@ export default function RatePage({ reasons }: Props) {
   const [sending, setSending] = useState<boolean>(false);
   const [nickname, setNickname] = useState("");
   const [comment, setComment] = useState("");
-  const [reasonId, setReasonId] = useState<number | null>(null);
+  const [reasonId, setReasonId] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -51,7 +51,7 @@ export default function RatePage({ reasons }: Props) {
         <select
           className="rounded border border-[#1d2226] p-2"
           value={reasonId ?? ""}
-          onChange={(e) => setReasonId(Number(e.target.value))}
+          onChange={(e) => setReasonId(e.target.value)}
         >
           {reasons.map((reason) => (
             <option key={reason.id} value={reason.id}>

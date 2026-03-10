@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Backend.Ratings.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class add_outbox : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,6 +52,20 @@ namespace Backend.Ratings.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RatingReasons",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Code = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    Value = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RatingReasons", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OutboxMessage",
                 columns: table => new
                 {
@@ -93,6 +107,28 @@ namespace Backend.Ratings.Infrastructure.Migrations
                         principalColumn: "OutboxId");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Votes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PlayerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FromUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReasonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Comment = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Votes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Votes_RatingReasons_ReasonId",
+                        column: x => x.ReasonId,
+                        principalTable: "RatingReasons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_InboxState_Delivered",
                 table: "InboxState",
@@ -124,6 +160,23 @@ namespace Backend.Ratings.Infrastructure.Migrations
                 name: "IX_OutboxState_Created",
                 table: "OutboxState",
                 column: "Created");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RatingReasons_Code",
+                table: "RatingReasons",
+                column: "Code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_PlayerId_FromUserId",
+                table: "Votes",
+                columns: new[] { "PlayerId", "FromUserId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_ReasonId",
+                table: "Votes",
+                column: "ReasonId");
         }
 
         /// <inheritdoc />
@@ -133,10 +186,16 @@ namespace Backend.Ratings.Infrastructure.Migrations
                 name: "OutboxMessage");
 
             migrationBuilder.DropTable(
+                name: "Votes");
+
+            migrationBuilder.DropTable(
                 name: "InboxState");
 
             migrationBuilder.DropTable(
                 name: "OutboxState");
+
+            migrationBuilder.DropTable(
+                name: "RatingReasons");
         }
     }
 }

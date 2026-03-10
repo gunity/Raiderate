@@ -2,7 +2,7 @@ namespace Backend.Ratings.Domain.RatingReasons;
 
 public class RatingReason
 {
-    public long Id { get; private set; }
+    public Guid Id { get; private set; }
     public string Code { get; private set; } = null!;
     public int Value { get; private set; }
     public bool IsActive { get; private set; }
@@ -11,6 +11,7 @@ public class RatingReason
 
     public RatingReason(string code, int value, bool isActive = true)
     {
+        Id = Guid.NewGuid();
         Code = code.Trim().ToLowerInvariant();
         Value = value;
         IsActive = isActive;

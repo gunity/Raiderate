@@ -14,7 +14,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
             .FirstOrDefaultAsync(x => x.Login == login, ct);
     }
 
-    public async Task<IReadOnlyList<User>> GetReadonlyByIdsAsync(long[] ids, CancellationToken ct = default)
+    public async Task<IReadOnlyList<User>> GetReadonlyByIdsAsync(Guid[] ids, CancellationToken ct = default)
     {
         return await context.Users
             .AsNoTracking()

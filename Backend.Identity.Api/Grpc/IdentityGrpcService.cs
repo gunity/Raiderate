@@ -9,13 +9,13 @@ public class IdentityGrpcService(IMediator mediator) : IdentityService.IdentityS
 {
     public override async Task<GetLoginsByUserIdReply> GetLoginsByUserId(GetLoginsByUserIdRequest request, ServerCallContext context)
     {
-        var ids = request.Ids.ToArray();
+        var ids = request.Ids.Select(Guid.Parse).ToArray();
         var result = await mediator.Send(new GetLoginsByUserIdQuery(ids), context.CancellationToken);
 
         var reply = new GetLoginsByUserIdReply();
         reply.Items.AddRange(result.Items.Select(x => new UserLoginItem
         {
-            Id = x.Id,
+            Id = x.Id.ToString(),
             Login = x.Login
         }));
         return reply;

@@ -9,11 +9,11 @@ service IdentityService {
 }
 
 message GetLoginsByUserIdRequest {
-  repeated int64 ids = 1;
+  repeated string ids = 1;
 }
 
 message UserLoginItem {
-  int64 id = 1;
+  string id = 1;
   string login = 2;
 }
 

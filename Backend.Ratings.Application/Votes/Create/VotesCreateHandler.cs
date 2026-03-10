@@ -30,12 +30,13 @@ public class VotesCreateHandler(
             throw new NotFoundAppException($"Reason with ID=({request.ReasonId}) not found");
         }
 
-        var vote = new Vote(player.Id, currentPlayer.Id, request.ReasonId, request.Comment);
+        var playerId = Guid.Parse(player.Id);
+        var vote = new Vote(playerId, currentPlayer.Id, request.ReasonId, request.Comment);
         try
         {
             await voteRepository.CreateAsync(vote, cancellationToken);
             
-            var voteCreated = new VoteCreated(player.Id,reason.Value, currentPlayer.Id, reason.Id);
+            var voteCreated = new VoteCreated(playerId, reason.Value, currentPlayer.Id, reason.Id);
             await publishEndpoint.Publish(voteCreated, cancellationToken);
             
             await unitOfWork.SaveChangesAsync(cancellationToken);
