@@ -66,7 +66,20 @@ public static class DependencyInjection
         {
             services.AddMassTransit(configurator =>
             {
+                configurator.SetKebabCaseEndpointNameFormatter();
+                
                 configurator.AddConsumer<VoteCreatedConsumer>();
+                
+                configurator.AddEntityFrameworkOutbox<AppDbContext>(options =>
+                {
+                    options.UsePostgres();
+                    options.UseBusOutbox();
+                });
+                
+                configurator.AddConfigureEndpointsCallback((context, name, endpointConfigurator) =>
+                {
+                    endpointConfigurator.UseEntityFrameworkOutbox<AppDbContext>(context);
+                });
                 
                 configurator.UsingRabbitMq((context, bus) =>
                 {

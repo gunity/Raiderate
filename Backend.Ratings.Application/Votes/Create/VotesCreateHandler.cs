@@ -36,7 +36,7 @@ public class VotesCreateHandler(
         {
             await voteRepository.CreateAsync(vote, cancellationToken);
             
-            var voteCreated = new VoteCreated(playerId, reason.Value, currentPlayer.Id, reason.Id);
+            var voteCreated = new VoteCreated(vote.Id, playerId, reason.Value, currentPlayer.Id, reason.Id);
             await publishEndpoint.Publish(voteCreated, cancellationToken);
             
             await unitOfWork.SaveChangesAsync(cancellationToken);
